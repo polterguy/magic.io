@@ -328,3 +328,7 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# Ignoring all Mac folder files
+**/.DS_Store
+magic.io.web.controller/magic.io.web.controller.xml
