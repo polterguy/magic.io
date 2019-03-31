@@ -11,5 +11,7 @@ namespace magic.io.contracts
     public interface IIOService
     {
         IEnumerable<Folder> GetFolders(string path);
+
+        IEnumerable<File> GetFiles(string path);
     }
 }

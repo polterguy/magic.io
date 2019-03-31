@@ -36,10 +36,22 @@ namespace magic.io.web.controller
         /// <param name="folder">Folder to return folders from within</param>
         /// <returns>List of all folders inside of the specified folder</returns>
         [HttpGet]
-        [Route("{folder}")]
+        [Route("folders")]
         public ActionResult<IEnumerable<Folder>> GetFolders(string folder)
         {
             return Ok(_service.GetFolders(folder));
+        }
+
+        /// <summary>
+        /// Returns all files inside of the specified folder
+        /// </summary>
+        /// <param name="folder">Folder to return files from within</param>
+        /// <returns>List of all files inside of the specified folder</returns>
+        [HttpGet]
+        [Route("files")]
+        public ActionResult<IEnumerable<File>> GetFiles(string folder)
+        {
+            return Ok(_service.GetFiles(folder));
         }
     }
 }
