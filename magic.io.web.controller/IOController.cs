@@ -53,5 +53,17 @@ namespace magic.io.web.controller
         {
             return Ok(_service.GetFiles(folder));
         }
+
+        /// <summary>
+        /// Returns the specified file to caller
+        /// </summary>
+        /// <param name="file">File to return</param>
+        /// <returns>The specified file</returns>
+        [HttpGet]
+        [Route("download")]
+        public FileResult Download(string file)
+        {
+            return _service.GetFile(file);
+        }
     }
 }

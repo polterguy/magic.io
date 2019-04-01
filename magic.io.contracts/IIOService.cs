@@ -4,6 +4,7 @@
  */
 
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using magic.io.web.model;
 
 namespace magic.io.contracts
@@ -13,5 +14,7 @@ namespace magic.io.contracts
         IEnumerable<Folder> GetFolders(string path);
 
         IEnumerable<File> GetFiles(string path);
+
+        FileResult GetFile(string path);
     }
 }
