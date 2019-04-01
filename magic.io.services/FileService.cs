@@ -5,16 +5,13 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Security;
 using System.Net.Http.Headers;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using magic.io.contracts;
 using magic.io.services.utilities;
-using www = magic.io.web.model;
 
 namespace magic.io.services
 {

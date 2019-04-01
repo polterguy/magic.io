@@ -6,12 +6,10 @@
 using System;
 using System.Linq;
 using System.Security.Claims;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using magic.io.contracts;
-using magic.io.web.model;
 
 namespace magic.io.web.controller
 {

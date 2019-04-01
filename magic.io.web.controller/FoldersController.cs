@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using magic.io.contracts;
-using magic.io.web.model;
 
 namespace magic.io.web.controller
 {
@@ -40,7 +39,7 @@ namespace magic.io.web.controller
         /// <returns>List all folders inside of the specified folder</returns>
         [HttpGet]
         [Route("list-folders")]
-        public ActionResult<IEnumerable<Folder>> GetFolders(string folder)
+        public ActionResult<IEnumerable<string>> GetFolders(string folder)
         {
             return Ok(_folderService.GetFolders(
                 folder ?? "/",
@@ -55,7 +54,7 @@ namespace magic.io.web.controller
         /// <returns>List all files inside of the specified folder</returns>
         [HttpGet]
         [Route("list-files")]
-        public ActionResult<IEnumerable<File>> GetFiles(string folder)
+        public ActionResult<IEnumerable<string>> GetFiles(string folder)
         {
             return Ok(_folderService.GetFiles(
                 folder ?? "/",

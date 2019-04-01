@@ -4,17 +4,14 @@
  */
 
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using magic.io.web.model;
 
 namespace magic.io.contracts
 {
     public interface IFolderService
     {
-        IEnumerable<Folder> GetFolders(string path, string username, string[] roles);
+        IEnumerable<string> GetFolders(string path, string username, string[] roles);
 
-        IEnumerable<File> GetFiles(string path, string username, string[] roles);
+        IEnumerable<string> GetFiles(string path, string username, string[] roles);
 
         void Delete(string path, string username, string[] roles);
 

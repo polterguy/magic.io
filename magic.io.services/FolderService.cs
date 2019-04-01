@@ -3,18 +3,13 @@
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
-using System;
 using System.IO;
 using System.Linq;
 using System.Security;
-using System.Net.Http.Headers;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using magic.io.contracts;
 using magic.io.services.utilities;
-using www = magic.io.web.model;
 
 namespace magic.io.services
 {
@@ -29,7 +24,7 @@ namespace magic.io.services
 
         #region [ -- Interface implementations -- ]
 
-        public IEnumerable<www.Folder> GetFolders(
+        public IEnumerable<string> GetFolders(
             string path,
             string username,
             string[] roles)
@@ -43,13 +38,11 @@ namespace magic.io.services
                 Directory.Exists(path)))
                 throw new SecurityException("Access denied");
 
-            return Directory.GetDirectories(path).Select(x => new www.Folder
-            {
-                Path = _utilities.GetRelativePath(x),
-            });
+            return Directory.GetDirectories(path)
+                .Select(x => _utilities.GetRelativePath(x));
         }
 
-        public IEnumerable<www.File> GetFiles(
+        public IEnumerable<string> GetFiles(
             string path,
             string username,
             string[] roles)
@@ -63,10 +56,8 @@ namespace magic.io.services
                 Directory.Exists(path)))
                 throw new SecurityException("Access denied");
 
-            return Directory.GetFiles(path).Select(x => new www.File
-            {
-                Path = _utilities.GetRelativePath(x),
-            });
+            return Directory.GetFiles(path)
+                .Select(x => _utilities.GetRelativePath(x));
         }
 
         public void Delete(string path, string username, string[] roles)
