@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using magic.io.contracts;
 using magic.io.web.model;
 
@@ -45,6 +46,25 @@ namespace magic.io.web.controller
                 file,
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+        }
+
+        /// <summary>
+        /// Uploads a file to your server and stores it at the specified path
+        /// </summary>
+        /// <param name="file">The actual file</param>
+        /// <param name="folder">The folder on your server where you want to store your file</param>
+        /// <returns>200 if file was successfully saved</returns>
+        [HttpPost]
+        [DisableRequestSizeLimit]
+        [Consumes("multipart/form-data")]
+        public ActionResult Upload([Required] [FromForm] IFormFile file, string folder)
+        {
+            _service.SaveFile(
+                file,
+                folder ?? "/",
+                User.Identity.Name,
+                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+            return Ok();
         }
 
         /// <summary>

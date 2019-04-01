@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using magic.io.web.model;
 
 namespace magic.io.contracts
@@ -28,6 +29,8 @@ namespace magic.io.contracts
         FileResult GetFile(string path, string username, string[] roles);
 
         void DeleteFile(string path, string username, string[] roles);
+
+        void SaveFile(IFormFile file, string folder, string username, string[] roles);
 
         #endregion
     }

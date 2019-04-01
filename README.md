@@ -31,6 +31,24 @@ dotnet add magic.backend reference modules/magic.io/magic.io.web.controller/magi
 dotnet add magic.backend reference modules/magic.io/magic.io.services/magic.io.services.csproj
 ```
 
+## Configuring Magic IO
+
+If you want to you can configure where on disc you want Magic IO to physically store your files. This
+is accomplished by overriding the _"root-folder"_ for Magic IO by providing an appsettings.json configuration
+such as the following illustrates.
+
+```
+  "io": {
+    "root-folder": "~/some-folder/"
+  }
+```
+
+The tilde (~) above implies `Directory.GetCurrentDirectory()`, and is the root directory of your web app. You don't
+need to store your files inside of your web application folder if you don't want to. You can also use an absolute path,
+to anywhere on disc as your root folder for Magic IO. However, you must make sure the web server process somehow have
+access to that folder, and that it is allowed to store and manipulate files there somehow. The default root folder
+for Magic IO is _"~/files/"_ if no value is explicitly provided.
+
 ## Security concerns
 
 Magic IO is not secured out of the box, and you should apply some sort of security to it, since by default

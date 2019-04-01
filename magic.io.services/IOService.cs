@@ -3,11 +3,15 @@
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Net.Http.Headers;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using magic.io.contracts;
 using www = magic.io.web.model;
 
@@ -15,6 +19,13 @@ namespace magic.io.services
 {
     public class IOService : IIOService
     {
+        readonly IConfiguration _configuration;
+
+        public IOService(IConfiguration configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
+
         #region [ -- Interface implementations -- ]
 
         public IEnumerable<www.Folder> GetFolders(
@@ -22,6 +33,7 @@ namespace magic.io.services
             string username,
             string[] roles)
         {
+            path = GetRelativePath(path);
             if (!HasAccess(
                 path,
                 username,
@@ -32,7 +44,7 @@ namespace magic.io.services
 
             return Directory.GetDirectories(path).Select(x => new www.Folder
             {
-                Path = x,
+                Path = StripAbsolutePath(x),
             });
         }
 
@@ -41,6 +53,7 @@ namespace magic.io.services
             string username,
             string[] roles)
         {
+            path = GetRelativePath(path);
             if (!HasAccess(
                 path,
                 username,
@@ -51,12 +64,13 @@ namespace magic.io.services
 
             return Directory.GetFiles(path).Select(x => new www.File
             {
-                Path = x,
+                Path = StripAbsolutePath(x),
             });
         }
 
         public void DeleteFolder(string path, string username, string[] roles)
         {
+            path = GetRelativePath(path);
             if (!HasAccess(
                 path,
                 username,
@@ -70,6 +84,7 @@ namespace magic.io.services
 
         public void CreateFolder(string path, string username, string[] roles)
         {
+            path = GetRelativePath(path);
             if (!HasAccess(
                 path,
                 username,
@@ -86,6 +101,7 @@ namespace magic.io.services
             string username,
             string[] roles)
         {
+            path = GetRelativePath(path);
             if (!HasAccess(
                 path,
                 username,
@@ -99,6 +115,7 @@ namespace magic.io.services
 
         public void DeleteFile(string path, string username, string[] roles)
         {
+            path = GetRelativePath(path);
             if (!HasAccess(
                 path,
                 username,
@@ -110,30 +127,52 @@ namespace magic.io.services
             File.Delete(path);
         }
 
+        public void SaveFile(IFormFile file, string folder, string username, string[] roles)
+        {
+            if (file.Length <= 0)
+                throw new ArgumentException("Empty file");
+
+            folder = GetRelativePath(folder);
+            var filename = folder + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            if (!HasAccess(
+                filename,
+                username,
+                roles,
+                AccessType.WriteFile,
+                File.Exists(folder)))
+                throw new SecurityException("Access denied");
+
+            using (var stream = File.Create(filename))
+            {
+                file.CopyTo(stream);
+            }
+        }
+
         #endregion
 
-        #region [ -- Private methods and helpers -- ]
+        #region [ -- Private methods -- ]
 
-        enum AccessType
+        string StripAbsolutePath(string absolute)
         {
-            ReadFolder,
-            WriteFolder,
-            DeleteFolder,
-            ReadFile,
-            WriteFile,
-            DeleteFile,
+            var relative = GetRelativePath("/");
+            return "/" + absolute.Substring(relative.Length).TrimStart('/');
+        }
+
+        string GetRelativePath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException(nameof(path));
+
+            var rootFolder = _configuration["io:root-folder"] ?? "~/files/";
+            rootFolder = rootFolder.Replace("~", Directory.GetCurrentDirectory());
+            rootFolder = rootFolder.TrimEnd('/') + "/";
+            var fullPath = rootFolder + path.TrimStart('/');
+            return fullPath;
         }
 
         string GetContentType(string filename)
         {
-            // TODO: Implement NuGet package for MIME types.
-            switch(new FileInfo(filename).Extension)
-            {
-                case ".png":
-                    return "image/png";
-                default:
-                    return "application/x-octetstream";
-            }
+            return MimeTypes.GetMimeType(filename);
         }
 
         bool HasAccess(
@@ -143,9 +182,11 @@ namespace magic.io.services
             AccessType type,
             bool fileObjectExists)
         {
-            // TODO: Implement your own role based security checks here!
-            // You can fine grain access right according to path and access type,
-            // and also whether or not the file/folder exists from before
+            /*
+             * TODO: Implement your own role based security checks here!
+             * You can fine grain access right according to path and access type,
+             * and also whether or not the file/folder exists from before
+             */
             return true;
         }
 

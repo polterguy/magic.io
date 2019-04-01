@@ -40,10 +40,10 @@ namespace magic.io.web.controller
         /// <returns>List all folders inside of the specified folder</returns>
         [HttpGet]
         [Route("list-folders")]
-        public ActionResult<IEnumerable<Folder>> GetFolders([Required] string folder)
+        public ActionResult<IEnumerable<Folder>> GetFolders(string folder)
         {
             return Ok(_service.GetFolders(
-                folder,
+                folder ?? "/",
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
         }
@@ -55,10 +55,10 @@ namespace magic.io.web.controller
         /// <returns>List all files inside of the specified folder</returns>
         [HttpGet]
         [Route("list-files")]
-        public ActionResult<IEnumerable<File>> GetFiles([Required] string folder)
+        public ActionResult<IEnumerable<File>> GetFiles(string folder)
         {
             return Ok(_service.GetFiles(
-                folder,
+                folder ?? "/",
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
         }
