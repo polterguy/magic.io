@@ -22,15 +22,15 @@ namespace magic.io.web.controller
     [Produces("application/json")]
     public class FoldersController : ControllerBase
     {
-        readonly IIOService _service;
+        readonly IFolderService _folderService;
 
         /// <summary>
         /// Creates a new instance of your folders controller
         /// </summary>
         /// <param name="service">Service containing business logic</param>
-        public FoldersController(IIOService service)
+        public FoldersController(IFolderService service)
         {
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _folderService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace magic.io.web.controller
         [Route("list-folders")]
         public ActionResult<IEnumerable<Folder>> GetFolders(string folder)
         {
-            return Ok(_service.GetFolders(
+            return Ok(_folderService.GetFolders(
                 folder ?? "/",
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
@@ -57,7 +57,7 @@ namespace magic.io.web.controller
         [Route("list-files")]
         public ActionResult<IEnumerable<File>> GetFiles(string folder)
         {
-            return Ok(_service.GetFiles(
+            return Ok(_folderService.GetFiles(
                 folder ?? "/",
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
@@ -70,7 +70,7 @@ namespace magic.io.web.controller
         [HttpDelete]
         public ActionResult DeleteFolder([Required] string folder)
         {
-            _service.DeleteFolder(
+            _folderService.Delete(
                 folder,
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
@@ -84,7 +84,7 @@ namespace magic.io.web.controller
         [HttpPut]
         public ActionResult CreateFolder([Required] string folder)
         {
-            _service.CreateFolder(
+            _folderService.Create(
                 folder,
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());

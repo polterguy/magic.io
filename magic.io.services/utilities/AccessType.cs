@@ -3,9 +3,9 @@
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
-namespace magic.io.services
+namespace magic.io.services.utilities
 {
-    enum AccessType
+    public enum AccessType
     {
         ReadFolder,
 

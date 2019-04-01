@@ -15,7 +15,8 @@ namespace magic.io.services.init
     {
         public void Configure(IKernel kernel, IConfiguration configuration)
         {
-            kernel.Bind<IIOService>().To<IOService>();
+            kernel.Bind<IFileService>().To<FileService>();
+            kernel.Bind<IFolderService>().To<FolderService>();
         }
     }
 }

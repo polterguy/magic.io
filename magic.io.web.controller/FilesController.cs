@@ -23,13 +23,13 @@ namespace magic.io.web.controller
     [Produces("application/json")]
     public class FilesController : ControllerBase
     {
-        readonly IIOService _service;
+        readonly IFileService _service;
 
         /// <summary>
         /// Creates a new instance of your files controller
         /// </summary>
         /// <param name="service">Service containing business logic</param>
-        public FilesController(IIOService service)
+        public FilesController(IFileService service)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
@@ -42,7 +42,7 @@ namespace magic.io.web.controller
         [HttpGet]
         public FileResult Download([Required] string file)
         {
-            return _service.GetFile(
+            return _service.Get(
                 file,
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
@@ -59,7 +59,7 @@ namespace magic.io.web.controller
         [Consumes("multipart/form-data")]
         public ActionResult Upload([Required] [FromForm] IFormFile file, string folder)
         {
-            _service.SaveFile(
+            _service.Save(
                 file,
                 folder ?? "/",
                 User.Identity.Name,
@@ -74,7 +74,7 @@ namespace magic.io.web.controller
         [HttpDelete]
         public ActionResult DeleteFile([Required] string file)
         {
-            _service.DeleteFile(
+            _service.Delete(
                 file,
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
