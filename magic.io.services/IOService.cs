@@ -5,6 +5,7 @@
 
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using magic.io.contracts;
@@ -16,24 +17,42 @@ namespace magic.io.services
     {
         #region [ -- Interface implementations -- ]
 
-        public IEnumerable<www.Folder> GetFolders(string path)
+        public IEnumerable<www.Folder> GetFolders(
+            string path,
+            string username,
+            string[] roles)
         {
+            if (!HasAccess(path, username, roles))
+                throw new SecurityException("Access denied");
+
             return Directory.GetDirectories(path).Select(x => new www.Folder
             {
                 Path = x,
             });
         }
 
-        public IEnumerable<www.File> GetFiles(string path)
+        public IEnumerable<www.File> GetFiles(
+            string path,
+            string username,
+            string[] roles)
         {
+            if (!HasAccess(path, username, roles))
+                throw new SecurityException("Access denied");
+
             return Directory.GetFiles(path).Select(x => new www.File
             {
                 Path = x,
             });
         }
 
-        public FileResult GetFile(string path)
+        public FileResult GetFile(
+            string path,
+            string username,
+            string[] roles)
         {
+            if (!HasAccess(path, username, roles))
+                throw new SecurityException("Access denied");
+
             return new FileStreamResult(File.OpenRead(path), GetContentType(path));
         }
 
@@ -51,6 +70,15 @@ namespace magic.io.services
                 default:
                     return "application/x-octetstream";
             }
+        }
+
+        bool HasAccess(
+            string path,
+            string username,
+            string[] roles)
+        {
+            // TODO: Implement your own role based security checks here!
+            return true;
         }
 
         #endregion

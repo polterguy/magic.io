@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Security.Claims;
+using System.Linq;
+using System;
 /*
  * Magic, Copyright(c) Thomas Hansen 2019 - thomas@gaiasoul.com
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
@@ -39,7 +41,10 @@ namespace magic.io.web.controller
         [Route("folders")]
         public ActionResult<IEnumerable<Folder>> GetFolders(string folder)
         {
-            return Ok(_service.GetFolders(folder));
+            return Ok(_service.GetFolders(
+                folder,
+                User.Identity.Name,
+                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
         }
 
         /// <summary>
@@ -51,7 +56,10 @@ namespace magic.io.web.controller
         [Route("files")]
         public ActionResult<IEnumerable<File>> GetFiles(string folder)
         {
-            return Ok(_service.GetFiles(folder));
+            return Ok(_service.GetFiles(
+                folder,
+                User.Identity.Name,
+                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
         }
 
         /// <summary>
@@ -63,7 +71,10 @@ namespace magic.io.web.controller
         [Route("download")]
         public FileResult Download(string file)
         {
-            return _service.GetFile(file);
+            return _service.GetFile(
+                file,
+                User.Identity.Name,
+                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
         }
     }
 }

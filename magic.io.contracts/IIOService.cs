@@ -11,10 +11,10 @@ namespace magic.io.contracts
 {
     public interface IIOService
     {
-        IEnumerable<Folder> GetFolders(string path);
+        IEnumerable<Folder> GetFolders(string path, string username, string[] roles);
 
-        IEnumerable<File> GetFiles(string path);
+        IEnumerable<File> GetFiles(string path, string username, string[] roles);
 
-        FileResult GetFile(string path);
+        FileResult GetFile(string path, string username, string[] roles);
     }
 }
