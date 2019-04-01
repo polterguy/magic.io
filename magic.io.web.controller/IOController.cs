@@ -1,12 +1,13 @@
-﻿using System.Security.Claims;
-using System.Linq;
-using System;
-/*
+﻿/*
  * Magic, Copyright(c) Thomas Hansen 2019 - thomas@gaiasoul.com
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
+using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using magic.io.contracts;
 using magic.io.web.model;
@@ -39,7 +40,7 @@ namespace magic.io.web.controller
         /// <returns>List of all folders inside of the specified folder</returns>
         [HttpGet]
         [Route("folders")]
-        public ActionResult<IEnumerable<Folder>> GetFolders(string folder)
+        public ActionResult<IEnumerable<Folder>> GetFolders([Required] string folder)
         {
             return Ok(_service.GetFolders(
                 folder,
@@ -54,7 +55,7 @@ namespace magic.io.web.controller
         /// <returns>List of all files inside of the specified folder</returns>
         [HttpGet]
         [Route("files")]
-        public ActionResult<IEnumerable<File>> GetFiles(string folder)
+        public ActionResult<IEnumerable<File>> GetFiles([Required] string folder)
         {
             return Ok(_service.GetFiles(
                 folder,
@@ -69,12 +70,42 @@ namespace magic.io.web.controller
         /// <returns>The specified file</returns>
         [HttpGet]
         [Route("download")]
-        public FileResult Download(string file)
+        public FileResult Download([Required] string file)
         {
             return _service.GetFile(
                 file,
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+        }
+
+        /// <summary>
+        /// Deletes the specified folder
+        /// </summary>
+        /// <param name="folder">Folder to delete</param>
+        [HttpDelete]
+        [Route("folder")]
+        public ActionResult DeleteFolder([Required] string folder)
+        {
+            _service.DeleteFolder(
+                folder,
+                User.Identity.Name,
+                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+            return Ok();
+        }
+
+        /// <summary>
+        /// Deletes the specified file
+        /// </summary>
+        /// <param name="file">File to delete</param>
+        [HttpDelete]
+        [Route("file")]
+        public ActionResult DeleteFile([Required] string file)
+        {
+            _service.DeleteFile(
+                file,
+                User.Identity.Name,
+                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+            return Ok();
         }
     }
 }

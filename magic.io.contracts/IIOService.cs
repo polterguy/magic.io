@@ -16,5 +16,9 @@ namespace magic.io.contracts
         IEnumerable<File> GetFiles(string path, string username, string[] roles);
 
         FileResult GetFile(string path, string username, string[] roles);
+
+        void DeleteFile(string path, string username, string[] roles);
+
+        void DeleteFolder(string path, string username, string[] roles);
     }
 }

@@ -34,7 +34,7 @@ dotnet add magic.backend reference modules/magic.io/magic.io.services/magic.io.s
 ## Security concerns
 
 Magic IO is not secured out of the box, and you should apply some sort of security to it, since by default
-all files that are accessible for your web server process, is accessible to anyone having the URL
+all files that are accessible for your web server process, is also accessible to anyone having the URL
 to your API endpoint. The easiest way to accomplish this, is to simply apply `[Authorize]`
 to your Magic IO endpoints, which only allows authorized clients to access your files, for then to combine this
 with the [Magic Auth project](https://github.com/polterguy/magic.auth). Slightly more
@@ -42,9 +42,26 @@ advanced, and probably more secure, is to make sure your web server application 
 on your server, and then use your web server's authorization features to deny serving any files that your
 application should not have access to for some reasons. Even better is to modify the _"magic.io.services"_
 project, to make sure you check according to role if a user is allowed to access or modify your files. I
-suggest applying a combination of all of these methods to make sure access is not granted to somebody who
+suggest applying a combination of all of these methods, to make sure access is not granted to somebody who
 should not have access.
 
 **Notice**, all service methods in Magic IO will be given the username, and the list of roles the user belongs to
 as a convenience feature for you to apply role based access rights to files and folders inside of your own service
 layer. **Use this feature!**
+
+## Licensing
+
+Magic IO is licensed as Affero GPL, which implies that you can only use it to create Open Source software - However, a proprietary
+enabling license can be obtained for �50 by following [this PayPal link](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MD8B9E2X638QS) and
+pay me �50 - At which point you are free to create _one_ closed source web app. If you want to create multiple closed source web APIs using Magic IO, you'll
+have to purchase one license for each web API project you want to create.
+
+* [Purchase closed source license for �50](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MD8B9E2X638QS)
+
+Notice, without a closed source license, your code automatically becomes Open Source, and you'll have to provide a link to your own source code from any website(s),
+and/or application(s) from where you are consuming your Magic web API. With a closed source license, you can create closed source code, and you don't have to provide
+a link to neither me, nor your own source code.
+
+> Send more Champagne
+
+Quote by Karl Marx

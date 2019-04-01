@@ -22,7 +22,12 @@ namespace magic.io.services
             string username,
             string[] roles)
         {
-            if (!HasAccess(path, username, roles))
+            if (!HasAccess(
+                path,
+                username,
+                roles,
+                AccessType.ReadFolder,
+                Directory.Exists(path)))
                 throw new SecurityException("Access denied");
 
             return Directory.GetDirectories(path).Select(x => new www.Folder
@@ -36,7 +41,12 @@ namespace magic.io.services
             string username,
             string[] roles)
         {
-            if (!HasAccess(path, username, roles))
+            if (!HasAccess(
+                path,
+                username,
+                roles,
+                AccessType.ReadFolder,
+                Directory.Exists(path)))
                 throw new SecurityException("Access denied");
 
             return Directory.GetFiles(path).Select(x => new www.File
@@ -50,15 +60,56 @@ namespace magic.io.services
             string username,
             string[] roles)
         {
-            if (!HasAccess(path, username, roles))
+            if (!HasAccess(
+                path,
+                username,
+                roles,
+                AccessType.ReadFile,
+                File.Exists(path)))
                 throw new SecurityException("Access denied");
 
             return new FileStreamResult(File.OpenRead(path), GetContentType(path));
         }
 
+        public void DeleteFile(string path, string username, string[] roles)
+        {
+            if (!HasAccess(
+                path,
+                username,
+                roles,
+                AccessType.DeleteFile,
+                File.Exists(path)))
+                throw new SecurityException("Access denied");
+
+            File.Delete(path);
+        }
+
+        public void DeleteFolder(string path, string username, string[] roles)
+        {
+            if (!HasAccess(
+                path,
+                username,
+                roles,
+                AccessType.DeleteFolder,
+                Directory.Exists(path)))
+                throw new SecurityException("Access denied");
+
+            Directory.Delete(path);
+        }
+
         #endregion
 
-        #region [ -- Private methods -- ]
+        #region [ -- Private methods and helpers -- ]
+
+        enum AccessType
+        {
+            ReadFolder,
+            WriteFolder,
+            DeleteFolder,
+            ReadFile,
+            WriteFile,
+            DeleteFile,
+        }
 
         string GetContentType(string filename)
         {
@@ -75,9 +126,13 @@ namespace magic.io.services
         bool HasAccess(
             string path,
             string username,
-            string[] roles)
+            string[] roles,
+            AccessType type,
+            bool fileObjectExists)
         {
             // TODO: Implement your own role based security checks here!
+            // You can fine grain access right according to path and access type,
+            // and also whether or not the file/folder exists from before
             return true;
         }
 
