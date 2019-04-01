@@ -11,14 +11,24 @@ namespace magic.io.contracts
 {
     public interface IIOService
     {
+        #region [ -- Folder methods -- ]
+
         IEnumerable<Folder> GetFolders(string path, string username, string[] roles);
 
         IEnumerable<File> GetFiles(string path, string username, string[] roles);
+
+        void DeleteFolder(string path, string username, string[] roles);
+
+        void CreateFolder(string path, string username, string[] roles);
+
+        #endregion
+
+        #region [ -- File methods -- ]
 
         FileResult GetFile(string path, string username, string[] roles);
 
         void DeleteFile(string path, string username, string[] roles);
 
-        void DeleteFolder(string path, string username, string[] roles);
+        #endregion
     }
 }

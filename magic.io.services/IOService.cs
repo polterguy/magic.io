@@ -55,6 +55,32 @@ namespace magic.io.services
             });
         }
 
+        public void DeleteFolder(string path, string username, string[] roles)
+        {
+            if (!HasAccess(
+                path,
+                username,
+                roles,
+                AccessType.DeleteFolder,
+                Directory.Exists(path)))
+                throw new SecurityException("Access denied");
+
+            Directory.Delete(path);
+        }
+
+        public void CreateFolder(string path, string username, string[] roles)
+        {
+            if (!HasAccess(
+                path,
+                username,
+                roles,
+                AccessType.WriteFolder,
+                Directory.Exists(path)))
+                throw new SecurityException("Access denied");
+
+            Directory.CreateDirectory(path);
+        }
+
         public FileResult GetFile(
             string path,
             string username,
@@ -82,19 +108,6 @@ namespace magic.io.services
                 throw new SecurityException("Access denied");
 
             File.Delete(path);
-        }
-
-        public void DeleteFolder(string path, string username, string[] roles)
-        {
-            if (!HasAccess(
-                path,
-                username,
-                roles,
-                AccessType.DeleteFolder,
-                Directory.Exists(path)))
-                throw new SecurityException("Access denied");
-
-            Directory.Delete(path);
         }
 
         #endregion

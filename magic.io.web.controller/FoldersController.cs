@@ -17,18 +17,18 @@ namespace magic.io.web.controller
     /// <summary>
     /// IO controller for manipulating files and folders on your server
     /// </summary>
-    [Route("api/io")]
+    [Route("api/folders")]
     [Consumes("application/json")]
     [Produces("application/json")]
-    public class IOController : ControllerBase
+    public class FoldersController : ControllerBase
     {
         readonly IIOService _service;
 
         /// <summary>
-        /// Creates a new instance of your IO controller
+        /// Creates a new instance of your folders controller
         /// </summary>
         /// <param name="service">Service containing business logic</param>
-        public IOController(IIOService service)
+        public FoldersController(IIOService service)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
@@ -37,9 +37,9 @@ namespace magic.io.web.controller
         /// Returns all folders inside of the specified folder
         /// </summary>
         /// <param name="folder">Folder to return folders from within</param>
-        /// <returns>List of all folders inside of the specified folder</returns>
+        /// <returns>List all folders inside of the specified folder</returns>
         [HttpGet]
-        [Route("folders")]
+        [Route("list-folders")]
         public ActionResult<IEnumerable<Folder>> GetFolders([Required] string folder)
         {
             return Ok(_service.GetFolders(
@@ -52,9 +52,9 @@ namespace magic.io.web.controller
         /// Returns all files inside of the specified folder
         /// </summary>
         /// <param name="folder">Folder to return files from within</param>
-        /// <returns>List of all files inside of the specified folder</returns>
+        /// <returns>List all files inside of the specified folder</returns>
         [HttpGet]
-        [Route("files")]
+        [Route("list-files")]
         public ActionResult<IEnumerable<File>> GetFiles([Required] string folder)
         {
             return Ok(_service.GetFiles(
@@ -64,26 +64,10 @@ namespace magic.io.web.controller
         }
 
         /// <summary>
-        /// Returns the specified file to caller
-        /// </summary>
-        /// <param name="file">File to return</param>
-        /// <returns>The specified file</returns>
-        [HttpGet]
-        [Route("download")]
-        public FileResult Download([Required] string file)
-        {
-            return _service.GetFile(
-                file,
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
-        }
-
-        /// <summary>
         /// Deletes the specified folder
         /// </summary>
         /// <param name="folder">Folder to delete</param>
         [HttpDelete]
-        [Route("folder")]
         public ActionResult DeleteFolder([Required] string folder)
         {
             _service.DeleteFolder(
@@ -94,15 +78,14 @@ namespace magic.io.web.controller
         }
 
         /// <summary>
-        /// Deletes the specified file
+        /// Creates the specified folder
         /// </summary>
-        /// <param name="file">File to delete</param>
-        [HttpDelete]
-        [Route("file")]
-        public ActionResult DeleteFile([Required] string file)
+        /// <param name="folder">Folder to create</param>
+        [HttpPut]
+        public ActionResult CreateFolder([Required] string folder)
         {
-            _service.DeleteFile(
-                file,
+            _service.CreateFolder(
+                folder,
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
             return Ok();
