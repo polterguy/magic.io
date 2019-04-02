@@ -89,7 +89,7 @@ namespace magic.io.services
 
             source = _utilities.GetFullPath(source);
             if (!File.Exists(source))
-                throw new ArgumentException($"File '{source}' does not exist");
+                throw new ArgumentOutOfRangeException($"File '{source}' does not exist");
 
             if (!_utilities.HasAccess(
                 source,
@@ -123,7 +123,7 @@ namespace magic.io.services
 
             source = _utilities.GetFullPath(source);
             if (!File.Exists(source))
-                throw new ArgumentException($"File '{source}' does not exist");
+                throw new ArgumentOutOfRangeException($"File '{source}' does not exist");
 
             if (!_utilities.HasAccess(
                 source,

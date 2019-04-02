@@ -98,7 +98,7 @@ namespace magic.io.services
 
             source = _utilities.GetFullPath(source);
             if (!Directory.Exists(source))
-                throw new ArgumentException($"Folder '{source}' does not exist");
+                throw new ArgumentOutOfRangeException($"Folder '{source}' does not exist");
 
             if (!_utilities.HasAccess(
                 source,

@@ -26,7 +26,7 @@ namespace magic.io.services.utilities
         public string GetRelativePath(string absolute)
         {
             if (absolute.IndexOf(Root) != 0)
-                throw new ArgumentException($"'{absolute}' is not an absolute path and hence cannot be relativized");
+                throw new ArgumentOutOfRangeException($"'{absolute}' is not an absolute path and hence cannot be relativized");
 
             return "/" + absolute.Substring(Root.Length);
         }
