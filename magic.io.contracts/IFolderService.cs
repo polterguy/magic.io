@@ -16,5 +16,7 @@ namespace magic.io.contracts
         void Delete(string path, string username, string[] roles);
 
         void Create(string path, string username, string[] roles);
+
+        void Move(string source, string destination, string username, string[] roles);
     }
 }

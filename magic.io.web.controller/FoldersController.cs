@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using magic.io.contracts;
+using www = magic.io.web.model;
 
 namespace magic.io.web.controller
 {
@@ -21,7 +22,7 @@ namespace magic.io.web.controller
     [Produces("application/json")]
     public class FoldersController : ControllerBase
     {
-        readonly IFolderService _folderService;
+        readonly IFolderService _service;
 
         /// <summary>
         /// Creates a new instance of your folders controller
@@ -29,7 +30,7 @@ namespace magic.io.web.controller
         /// <param name="service">Service containing business logic</param>
         public FoldersController(IFolderService service)
         {
-            _folderService = service ?? throw new ArgumentNullException(nameof(service));
+            _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace magic.io.web.controller
         [Route("list-folders")]
         public ActionResult<IEnumerable<string>> GetFolders(string folder)
         {
-            return Ok(_folderService.GetFolders(
+            return Ok(_service.GetFolders(
                 folder ?? "/",
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
@@ -56,7 +57,7 @@ namespace magic.io.web.controller
         [Route("list-files")]
         public ActionResult<IEnumerable<string>> GetFiles(string folder)
         {
-            return Ok(_folderService.GetFiles(
+            return Ok(_service.GetFiles(
                 folder ?? "/",
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
@@ -69,7 +70,7 @@ namespace magic.io.web.controller
         [HttpDelete]
         public ActionResult DeleteFolder([Required] string folder)
         {
-            _folderService.Delete(
+            _service.Delete(
                 folder,
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
@@ -83,8 +84,24 @@ namespace magic.io.web.controller
         [HttpPut]
         public ActionResult CreateFolder([Required] string folder)
         {
-            _folderService.Create(
+            _service.Create(
                 folder,
+                User.Identity.Name,
+                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+            return Ok();
+        }
+
+        /// <summary>
+        /// Moves the specified source folder to its given destination
+        /// </summary>
+        /// <param name="input">Source and destination folder</param>
+        [HttpPost]
+        [Route("move")]
+        public ActionResult Move([Required] www.CopyMoveModel input)
+        {
+            _service.Move(
+                input.Source,
+                input.Destination,
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
             return Ok();

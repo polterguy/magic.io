@@ -3,6 +3,7 @@
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -86,6 +87,47 @@ namespace magic.io.services
                 throw new SecurityException("Access denied");
 
             Directory.CreateDirectory(path);
+        }
+
+        public void Move(string source, string destination, string username, string[] roles)
+        {
+            if (string.IsNullOrEmpty(source))
+                throw new ArgumentNullException(nameof(source));
+            if (string.IsNullOrEmpty(destination))
+                throw new ArgumentNullException(nameof(destination));
+
+            source = _utilities.GetFullPath(source);
+            if (!Directory.Exists(source))
+                throw new ArgumentException($"Folder '{source}' does not exist");
+
+            if (!_utilities.HasAccess(
+                source,
+                username,
+                roles,
+                AccessType.ReadFolder,
+                Directory.Exists(source)))
+                throw new SecurityException("Access denied");
+            if (!_utilities.HasAccess(
+                source,
+                username,
+                roles,
+                AccessType.DeleteFolder,
+                Directory.Exists(source)))
+                throw new SecurityException("Access denied");
+
+            destination = _utilities.GetFullPath(destination);
+            if (Directory.Exists(destination))
+                throw new ArgumentException($"Folder '{destination}' already exists");
+
+            if (!_utilities.HasAccess(
+                destination,
+                username,
+                roles,
+                AccessType.WriteFolder,
+                File.Exists(destination)))
+                throw new SecurityException("Access denied");
+
+            Directory.Move(source, destination);
         }
 
         #endregion

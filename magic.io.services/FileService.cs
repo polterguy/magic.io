@@ -86,7 +86,11 @@ namespace magic.io.services
                 throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(destination))
                 throw new ArgumentNullException(nameof(destination));
+
             source = _utilities.GetFullPath(source);
+            if (!File.Exists(source))
+                throw new ArgumentException($"File '{source}' does not exist");
+
             if (!_utilities.HasAccess(
                 source,
                 username,
@@ -94,7 +98,11 @@ namespace magic.io.services
                 AccessType.ReadFile,
                 File.Exists(source)))
                 throw new SecurityException("Access denied");
+
             destination = _utilities.GetFullPath(destination);
+            if (File.Exists(destination))
+                throw new ArgumentException($"File '{destination}' already exists");
+
             if (!_utilities.HasAccess(
                 destination,
                 username,
@@ -102,6 +110,7 @@ namespace magic.io.services
                 AccessType.WriteFile,
                 File.Exists(source)))
                 throw new SecurityException("Access denied");
+
             File.Copy(source, destination);
         }
 
@@ -111,7 +120,11 @@ namespace magic.io.services
                 throw new ArgumentNullException(nameof(source));
             if (string.IsNullOrEmpty(destination))
                 throw new ArgumentNullException(nameof(destination));
+
             source = _utilities.GetFullPath(source);
+            if (!File.Exists(source))
+                throw new ArgumentException($"File '{source}' does not exist");
+
             if (!_utilities.HasAccess(
                 source,
                 username,
@@ -126,14 +139,19 @@ namespace magic.io.services
                 AccessType.DeleteFile,
                 File.Exists(source)))
                 throw new SecurityException("Access denied");
+
             destination = _utilities.GetFullPath(destination);
+            if (File.Exists(destination))
+                throw new ArgumentException($"File '{destination}' already exists");
+
             if (!_utilities.HasAccess(
                 destination,
                 username,
                 roles,
                 AccessType.WriteFile,
-                File.Exists(source)))
+                File.Exists(destination)))
                 throw new SecurityException("Access denied");
+
             File.Move(source, destination);
         }
 
