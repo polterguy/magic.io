@@ -42,7 +42,7 @@ such as the following illustrates.
   }
 ```
 
-The tilde (~) above implies `Directory.GetCurrentDirectory()`, and is the root directory of your web app. You don't
+The tilde (\~) above implies `Directory.GetCurrentDirectory()`, and is the root directory of your web app. You don't
 need to store your files inside of your web application folder if you don't want to. You can also use an absolute path,
 to anywhere on disc as your root folder for Magic IO. However, you must make sure the web server process somehow have
 access to that folder, and that it is allowed to store and manipulate files there somehow. The default root folder
