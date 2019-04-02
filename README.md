@@ -43,10 +43,10 @@ such as the following illustrates.
 ```
 
 The tilde (\~) above implies `Directory.GetCurrentDirectory()`, and is the root directory of your web app. You don't
-need to store your files inside of your web application folder if you don't want to. You can also use an absolute path,
-to anywhere on disc as your root folder for Magic IO. However, you must make sure the web server process somehow have
-access to that folder, and that it is allowed to store and manipulate files there somehow. The default root folder
-for Magic IO is _"~/files/"_ if no value is explicitly provided.
+need to store your files inside of your web application folder if you don't want to, you can also use an absolute path,
+to anywhere on your disc. However, you must make sure the web server process somehow have access to that folder, and
+that it is allowed to store and manipulate files there somehow. The default root folder for Magic IO is _"~/files/"_
+if no value is explicitly provided.
 
 ## Security concerns
 
@@ -64,7 +64,9 @@ should not have access.
 
 **Notice**, all service methods in Magic IO will be given the username, and the list of roles the user belongs to
 as a convenience feature for you to apply role based access rights to files and folders inside of your own service
-layer. **Use this feature!**
+layer. To easily create your own authorization logic, you might want to start out by modifying `Utilities.HasAccess`.
+This method will always be called with parameters describing the type of access that is requested, allowing you to
+apply your own authorization logic easily. **Use this feature!**
 
 ## Licensing
 
