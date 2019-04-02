@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using magic.io.contracts;
+using www = magic.io.web.model;
 
 namespace magic.io.web.controller
 {
@@ -74,6 +75,38 @@ namespace magic.io.web.controller
         {
             _service.Delete(
                 file,
+                User.Identity.Name,
+                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+            return Ok();
+        }
+
+        /// <summary>
+        /// Copies the specified source file to its given destination
+        /// </summary>
+        /// <param name="input">Source and destination file</param>
+        [HttpPost]
+        [Route("copy")]
+        public ActionResult Copy([Required] www.CopyMoveModel input)
+        {
+            _service.Copy(
+                input.Source,
+                input.Destination,
+                User.Identity.Name,
+                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+            return Ok();
+        }
+
+        /// <summary>
+        /// Moves the specified source file to its given destination
+        /// </summary>
+        /// <param name="input">Source and destination file</param>
+        [HttpPost]
+        [Route("move")]
+        public ActionResult Move([Required] www.CopyMoveModel input)
+        {
+            _service.Move(
+                input.Source,
+                input.Destination,
                 User.Identity.Name,
                 User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
             return Ok();

@@ -80,6 +80,63 @@ namespace magic.io.services
             }
         }
 
+        public void Copy(string source, string destination, string username, string[] roles)
+        {
+            if (string.IsNullOrEmpty(source))
+                throw new ArgumentNullException(nameof(source));
+            if (string.IsNullOrEmpty(destination))
+                throw new ArgumentNullException(nameof(destination));
+            source = _utilities.GetFullPath(source);
+            if (!_utilities.HasAccess(
+                source,
+                username,
+                roles,
+                AccessType.ReadFile,
+                File.Exists(source)))
+                throw new SecurityException("Access denied");
+            destination = _utilities.GetFullPath(destination);
+            if (!_utilities.HasAccess(
+                destination,
+                username,
+                roles,
+                AccessType.WriteFile,
+                File.Exists(source)))
+                throw new SecurityException("Access denied");
+            File.Copy(source, destination);
+        }
+
+        public void Move(string source, string destination, string username, string[] roles)
+        {
+            if (string.IsNullOrEmpty(source))
+                throw new ArgumentNullException(nameof(source));
+            if (string.IsNullOrEmpty(destination))
+                throw new ArgumentNullException(nameof(destination));
+            source = _utilities.GetFullPath(source);
+            if (!_utilities.HasAccess(
+                source,
+                username,
+                roles,
+                AccessType.ReadFile,
+                File.Exists(source)))
+                throw new SecurityException("Access denied");
+            if (!_utilities.HasAccess(
+                source,
+                username,
+                roles,
+                AccessType.DeleteFile,
+                File.Exists(source)))
+                throw new SecurityException("Access denied");
+            destination = _utilities.GetFullPath(destination);
+            if (!_utilities.HasAccess(
+                destination,
+                username,
+                roles,
+                AccessType.WriteFile,
+                File.Exists(source)))
+                throw new SecurityException("Access denied");
+            File.Move(source, destination);
+        }
+
         #endregion
     }
 }
