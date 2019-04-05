@@ -16,7 +16,8 @@ namespace magic.io.services.utilities
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            Root = (configuration["io:root-folder"] ?? "~/files/")
+            var filesExists = Directory.Exists("/files/");
+            Root = (configuration["io:root-folder"] ?? (filesExists ? "~/files/" : "~/"))
                 .Replace("~", Directory.GetCurrentDirectory())
                 .TrimEnd('/') + "/";
         }

@@ -61,8 +61,8 @@ namespace magic.io.web.controller
             _service.Save(
                 file,
                 folder ?? "/",
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
             return Ok();
         }
 

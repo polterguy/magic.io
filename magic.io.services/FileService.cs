@@ -65,7 +65,7 @@ namespace magic.io.services
                 throw new ArgumentException("Empty file");
 
             folder = _utilities.GetFullPath(folder);
-            var filename = folder + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var filename = folder + file.FileName;
             if (!_utilities.HasAccess(
                 filename,
                 username,
