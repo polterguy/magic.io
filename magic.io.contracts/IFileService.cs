@@ -10,11 +10,11 @@ namespace magic.io.contracts
 {
     public interface IFileService
     {
-        FileResult Get(string path, string username, string[] roles);
+        FileResult Download(string path, string username, string[] roles);
 
         void Delete(string path, string username, string[] roles);
 
-        void Save(IFormFile file, string folder, string username, string[] roles);
+        void Upload(IFormFile file, string folder, string username, string[] roles);
 
         void Copy(string source, string destination, string username, string[] roles);
 

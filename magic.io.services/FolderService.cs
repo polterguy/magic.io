@@ -36,8 +36,7 @@ namespace magic.io.services
                 path,
                 username,
                 roles,
-                AccessType.ReadFolder,
-                Directory.Exists(path)))
+                AccessType.ReadFolder))
                 throw new SecurityException("Access denied");
 
             return Directory.GetDirectories(path)
@@ -54,8 +53,7 @@ namespace magic.io.services
                 path,
                 username,
                 roles,
-                AccessType.ReadFolder,
-                Directory.Exists(path)))
+                AccessType.ReadFolder))
                 throw new SecurityException("Access denied");
 
             return Directory.GetFiles(path)
@@ -69,8 +67,7 @@ namespace magic.io.services
                 path,
                 username,
                 roles,
-                AccessType.DeleteFolder,
-                Directory.Exists(path)))
+                AccessType.DeleteFolder))
                 throw new SecurityException("Access denied");
 
             Directory.Delete(path);
@@ -83,8 +80,7 @@ namespace magic.io.services
                 path,
                 username,
                 roles,
-                AccessType.WriteFolder,
-                Directory.Exists(path)))
+                AccessType.WriteFolder))
                 throw new SecurityException("Access denied");
 
             Directory.CreateDirectory(path);
@@ -105,15 +101,13 @@ namespace magic.io.services
                 source,
                 username,
                 roles,
-                AccessType.ReadFolder,
-                Directory.Exists(source)))
+                AccessType.ReadFolder))
                 throw new SecurityException("Access denied");
             if (!_utilities.HasAccess(
                 source,
                 username,
                 roles,
-                AccessType.DeleteFolder,
-                Directory.Exists(source)))
+                AccessType.DeleteFolder))
                 throw new SecurityException("Access denied");
 
             destination = _utilities.GetFullPath(destination);
@@ -124,8 +118,7 @@ namespace magic.io.services
                 destination,
                 username,
                 roles,
-                AccessType.WriteFolder,
-                File.Exists(destination)))
+                AccessType.WriteFolder))
                 throw new SecurityException("Access denied");
 
             Directory.Move(source, destination);

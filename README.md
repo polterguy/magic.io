@@ -34,9 +34,9 @@ dotnet add magic.backend reference modules/magic.io/magic.io.services/magic.io.s
 
 ## Configuring Magic IO
 
-If you want to you can configure where on disc you want Magic IO to physically store your files. This
-is accomplished by overriding the _"root-folder"_ for Magic IO by providing an appsettings.json configuration
-such as the following illustrates.
+If you want to you can configure where on disc you want Magic IO to physically store your files, this
+is accomplished by overriding the _"root-folder"_ for Magic IO by providing an _"appsettings.json"_
+configuration such as the following illustrates.
 
 ```
   "io": {
@@ -59,16 +59,10 @@ to your Magic IO endpoints, which only allows authorized clients to access your 
 with the [Magic Auth project](https://github.com/polterguy/magic.auth). Slightly more
 advanced, and probably more secure, is to make sure your web server application runs in a restricted user account
 on your server, and then use your web server's authorization features to deny serving any files that your
-application should not have access to for some reasons. Even better is to modify the _"magic.io.services"_
-project, to make sure you check according to role if a user is allowed to access or modify your files. I
-suggest applying a combination of all of these methods, to make sure access is not granted to somebody who
-should not have access.
-
-**Notice**, all service methods in Magic IO will be given the username, and the list of roles the user belongs to
-as a convenience feature for you to apply role based access rights to files and folders inside of your own service
-layer. To easily create your own authorization logic, you might want to start out by modifying `Utilities.HasAccess`.
-This method will always be called with parameters describing the type of access that is requested, allowing you to
-apply your own authorization logic easily. **Use this feature!**
+application should not have access to for some reasons. Even better is to implement the `IAuthorize` interface,
+that you can find in the _"magic.io.contracts"_ namespace/project, and then do some sort of switch/case
+based upon the `AccessType`, and the username/roles/path to the file/folder you want to have authorized
+access to.
 
 ## Licensing
 

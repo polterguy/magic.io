@@ -44,7 +44,7 @@ namespace magic.io.web.controller
         [Consumes("multipart/form-data")]
         public ActionResult Upload([Required] [FromForm] IFormFile file, string folder)
         {
-            _service.Save(
+            _service.Upload(
                 file,
                 folder ?? "/",
                 User?.Identity.Name,
@@ -60,7 +60,7 @@ namespace magic.io.web.controller
         [HttpGet]
         public FileResult Download([Required] string file)
         {
-            return _service.Get(
+            return _service.Download(
                 file,
                 User?.Identity.Name,
                 User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());

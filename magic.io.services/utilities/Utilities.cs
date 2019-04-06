@@ -51,13 +51,12 @@ namespace magic.io.services.utilities
             string path,
             string username,
             string[] roles,
-            AccessType type,
-            bool fileObjectExists)
+            AccessType type)
         {
             var authorize = _kernel.TryGet<IAuthorize>();
             if (authorize == null)
                 return true;
-            return authorize.Authorize(path, username, roles, type, fileObjectExists);
+            return authorize.Authorize(path, username, roles, type);
         }
     }
 }

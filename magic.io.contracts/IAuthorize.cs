@@ -10,10 +10,10 @@ namespace magic.io.contracts
 {
     public interface IAuthorize
     {
-        bool Authorize(string path,
+        bool Authorize(
+            string path,
             string username,
             string[] roles,
-            AccessType type,
-            bool fileObjectExists);
+            AccessType type);
     }
 }

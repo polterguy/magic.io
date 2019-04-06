@@ -27,7 +27,7 @@ namespace magic.io.services
 
         #region [ -- Interface implementations -- ]
 
-        public FileResult Get(
+        public FileResult Download(
             string path,
             string username,
             string[] roles)
@@ -37,8 +37,7 @@ namespace magic.io.services
                 path,
                 username,
                 roles,
-                AccessType.ReadFile,
-                File.Exists(path)))
+                AccessType.ReadFile))
                 throw new SecurityException("Access denied");
 
             if (!File.Exists(path))
@@ -58,14 +57,13 @@ namespace magic.io.services
                 path,
                 username,
                 roles,
-                AccessType.DeleteFile,
-                File.Exists(path)))
+                AccessType.DeleteFile))
                 throw new SecurityException("Access denied");
 
             File.Delete(path);
         }
 
-        public void Save(IFormFile file, string folder, string username, string[] roles)
+        public void Upload(IFormFile file, string folder, string username, string[] roles)
         {
             if (file.Length <= 0)
                 throw new ArgumentException("Empty file");
@@ -76,8 +74,7 @@ namespace magic.io.services
                 filename,
                 username,
                 roles,
-                AccessType.WriteFile,
-                File.Exists(folder)))
+                AccessType.WriteFile))
                 throw new SecurityException("Access denied");
 
             using (var stream = File.Create(filename))
@@ -101,8 +98,7 @@ namespace magic.io.services
                 source,
                 username,
                 roles,
-                AccessType.ReadFile,
-                File.Exists(source)))
+                AccessType.ReadFile))
                 throw new SecurityException("Access denied");
 
             destination = _utilities.GetFullPath(destination);
@@ -111,8 +107,7 @@ namespace magic.io.services
                 destination,
                 username,
                 roles,
-                AccessType.WriteFile,
-                File.Exists(source)))
+                AccessType.WriteFile))
                 throw new SecurityException("Access denied");
 
             if (File.Exists(destination))
@@ -136,15 +131,13 @@ namespace magic.io.services
                 source,
                 username,
                 roles,
-                AccessType.ReadFile,
-                File.Exists(source)))
+                AccessType.ReadFile))
                 throw new SecurityException("Access denied");
             if (!_utilities.HasAccess(
                 source,
                 username,
                 roles,
-                AccessType.DeleteFile,
-                File.Exists(source)))
+                AccessType.DeleteFile))
                 throw new SecurityException("Access denied");
 
             destination = _utilities.GetFullPath(destination);
@@ -153,8 +146,7 @@ namespace magic.io.services
                 destination,
                 username,
                 roles,
-                AccessType.WriteFile,
-                File.Exists(destination)))
+                AccessType.WriteFile))
                 throw new SecurityException("Access denied");
 
             if (File.Exists(destination))

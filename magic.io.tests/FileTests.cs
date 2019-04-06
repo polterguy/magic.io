@@ -41,6 +41,14 @@ namespace magic.io.tests
         }
 
         [Fact]
+        public void UploadNonExistingFolder()
+        {
+            var controller = CreateController();
+            var fileMock = CreateMoqFile("foo", "/non-existing-folder/test.txt");
+            Assert.Throws<DirectoryNotFoundException>(() => controller.Upload(fileMock.Object, "/"));
+        }
+
+        [Fact]
         public void UploadOverwriteDownload()
         {
             var controller = CreateController();
