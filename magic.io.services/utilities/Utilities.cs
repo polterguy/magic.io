@@ -6,13 +6,19 @@
 using System;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using Ninject;
+using magic.io.contracts;
 
 namespace magic.io.services.utilities
 {
     public class Utilities
     {
-        public Utilities(IConfiguration configuration)
+        readonly IKernel _kernel;
+
+        public Utilities(IConfiguration configuration, IKernel kernel)
         {
+            _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
+
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
@@ -48,12 +54,10 @@ namespace magic.io.services.utilities
             AccessType type,
             bool fileObjectExists)
         {
-            /*
-             * TODO: Implement your own role based security checks here!
-             * You can fine grain access right according to path and access type,
-             * and also whether or not the file/folder exists from before
-             */
-            return true;
+            var authorize = _kernel.TryGet<IAuthorize>();
+            if (authorize == null)
+                return true;
+            return authorize.Authorize(path, username, roles, type, fileObjectExists);
         }
     }
 }

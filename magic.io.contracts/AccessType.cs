@@ -3,7 +3,7 @@
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
-namespace magic.io.services.utilities
+namespace magic.io.contracts
 {
     public enum AccessType
     {

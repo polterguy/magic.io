@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Ninject;
 using magic.io.contracts;
 using magic.io.services.utilities;
 
@@ -19,9 +20,9 @@ namespace magic.io.services
     {
         readonly Utilities _utilities;
 
-        public FileService(IConfiguration configuration)
+        public FileService(IConfiguration configuration, IKernel kernel)
         {
-            _utilities = new Utilities(configuration);
+            _utilities = new Utilities(configuration, kernel);
         }
 
         #region [ -- Interface implementations -- ]
