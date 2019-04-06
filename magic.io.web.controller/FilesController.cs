@@ -91,8 +91,8 @@ namespace magic.io.web.controller
             _service.Copy(
                 input.Source,
                 input.Destination,
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
             return Ok();
         }
 
@@ -107,8 +107,8 @@ namespace magic.io.web.controller
             _service.Move(
                 input.Source,
                 input.Destination,
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
             return Ok();
         }
     }

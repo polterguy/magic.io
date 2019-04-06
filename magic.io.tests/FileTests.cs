@@ -13,6 +13,7 @@ using Xunit;
 using Ninject;
 using magic.tests;
 using magic.io.services;
+using magic.io.web.model;
 using magic.io.contracts;
 using magic.io.web.controller;
 
@@ -67,6 +68,63 @@ namespace magic.io.tests
             AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
 
             AssertHelper.Single(controller.DeleteFile("/test.txt"));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => controller.Download("/test.txt"));
+        }
+
+        [Fact]
+        public void UploadCopyDownload()
+        {
+            var controller = CreateController();
+            var fileMock = CreateMoqFile("File content", "test.txt");
+            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+
+            AssertHelper.Single(controller.Copy(new CopyMoveModel
+            {
+                Source = "/test.txt",
+                Destination = "/test2.txt",
+            }));
+
+            var result = controller.Download("/test2.txt");
+            Assert.Equal("test2.txt", result.FileDownloadName);
+            var fileStreamResult = result as FileStreamResult;
+            using (fileStreamResult.FileStream)
+            {
+                var reader = new StreamReader(fileStreamResult.FileStream);
+                Assert.Equal("File content", reader.ReadToEnd());
+            }
+
+            result = controller.Download("/test.txt");
+            Assert.Equal("test.txt", result.FileDownloadName);
+            fileStreamResult = result as FileStreamResult;
+            using (fileStreamResult.FileStream)
+            {
+                var reader = new StreamReader(fileStreamResult.FileStream);
+                Assert.Equal("File content", reader.ReadToEnd());
+            }
+        }
+
+        [Fact]
+        public void UploadMoveDownload()
+        {
+            var controller = CreateController();
+            var fileMock = CreateMoqFile("File content", "test.txt");
+            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+
+            AssertHelper.Single(controller.Move(new CopyMoveModel
+            {
+                Source = "/test.txt",
+                Destination = "/test2.txt",
+            }));
+
+            var result = controller.Download("/test2.txt");
+            Assert.Equal("test2.txt", result.FileDownloadName);
+            var fileStreamResult = result as FileStreamResult;
+            using (fileStreamResult.FileStream)
+            {
+                var reader = new StreamReader(fileStreamResult.FileStream);
+                Assert.Equal("File content", reader.ReadToEnd());
+            }
 
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.Download("/test.txt"));
         }

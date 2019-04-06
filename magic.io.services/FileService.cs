@@ -105,8 +105,6 @@ namespace magic.io.services
                 throw new SecurityException("Access denied");
 
             destination = _utilities.GetFullPath(destination);
-            if (File.Exists(destination))
-                throw new ArgumentException($"File '{destination}' already exists");
 
             if (!_utilities.HasAccess(
                 destination,
@@ -115,6 +113,9 @@ namespace magic.io.services
                 AccessType.WriteFile,
                 File.Exists(source)))
                 throw new SecurityException("Access denied");
+
+            if (File.Exists(destination))
+                File.Delete(destination);
 
             File.Copy(source, destination);
         }
@@ -146,8 +147,6 @@ namespace magic.io.services
                 throw new SecurityException("Access denied");
 
             destination = _utilities.GetFullPath(destination);
-            if (File.Exists(destination))
-                throw new ArgumentException($"File '{destination}' already exists");
 
             if (!_utilities.HasAccess(
                 destination,
@@ -156,6 +155,9 @@ namespace magic.io.services
                 AccessType.WriteFile,
                 File.Exists(destination)))
                 throw new SecurityException("Access denied");
+
+            if (File.Exists(destination))
+                File.Delete(destination);
 
             File.Move(source, destination);
         }
