@@ -77,7 +77,7 @@ namespace magic.io.tests
 
             AssertHelper.Single(controller.DeleteFile("/test.txt"));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => controller.Download("/test.txt"));
+            Assert.Throws<FileNotFoundException>(() => controller.Download("/test.txt"));
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace magic.io.tests
                 Assert.Equal("File content", reader.ReadToEnd());
             }
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => controller.Download("/test.txt"));
+            Assert.Throws<FileNotFoundException>(() => controller.Download("/test.txt"));
         }
 
         #endregion

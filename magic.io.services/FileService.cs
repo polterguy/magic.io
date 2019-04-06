@@ -41,13 +41,14 @@ namespace magic.io.services
                 throw new SecurityException("Access denied");
 
             if (!File.Exists(path))
-                throw new ArgumentOutOfRangeException("File doesn't exist");
+                throw new FileNotFoundException($"File '{path}' does not exist");
 
-            var result = new FileStreamResult(
+            return new FileStreamResult(
                 File.OpenRead(path),
-                _utilities.GetMimeType(path));
-            result.FileDownloadName = Path.GetFileName(path);
-            return result;
+                _utilities.GetMimeType(path))
+            {
+                FileDownloadName = Path.GetFileName(path)
+            };
         }
 
         public void Delete(string path, string username, string[] roles)
@@ -60,22 +61,36 @@ namespace magic.io.services
                 AccessType.DeleteFile))
                 throw new SecurityException("Access denied");
 
+            if (!File.Exists(path))
+                throw new FileNotFoundException($"File '{path}' does not exist");
+
             File.Delete(path);
         }
 
         public void Upload(IFormFile file, string folder, string username, string[] roles)
         {
             if (file.Length <= 0)
-                throw new ArgumentException("Empty file");
+                throw new ArgumentException($"File '{file.FileName}' is empty");
 
-            folder = _utilities.GetFullPath(folder);
-            var filename = folder + file.FileName;
+            var filename = _utilities.GetFullPath(folder) + file.FileName;
             if (!_utilities.HasAccess(
                 filename,
                 username,
                 roles,
                 AccessType.WriteFile))
                 throw new SecurityException("Access denied");
+
+            if (File.Exists(filename))
+            {
+                if (!_utilities.HasAccess(
+                    filename,
+                    username,
+                    roles,
+                    AccessType.DeleteFile))
+                    throw new SecurityException("Access denied");
+
+                File.Delete(filename);
+            }
 
             using (var stream = File.Create(filename))
             {
@@ -92,7 +107,7 @@ namespace magic.io.services
 
             source = _utilities.GetFullPath(source);
             if (!File.Exists(source))
-                throw new ArgumentOutOfRangeException($"File '{source}' does not exist");
+                throw new FileNotFoundException($"File '{source}' does not exist");
 
             if (!_utilities.HasAccess(
                 source,
@@ -111,7 +126,16 @@ namespace magic.io.services
                 throw new SecurityException("Access denied");
 
             if (File.Exists(destination))
+            {
+                if (!_utilities.HasAccess(
+                    destination,
+                    username,
+                    roles,
+                    AccessType.DeleteFile))
+                    throw new SecurityException("Access denied");
+
                 File.Delete(destination);
+            }
 
             File.Copy(source, destination);
         }
@@ -125,7 +149,7 @@ namespace magic.io.services
 
             source = _utilities.GetFullPath(source);
             if (!File.Exists(source))
-                throw new ArgumentOutOfRangeException($"File '{source}' does not exist");
+                throw new FileNotFoundException($"File '{source}' does not exist");
 
             if (!_utilities.HasAccess(
                 source,
@@ -133,6 +157,7 @@ namespace magic.io.services
                 roles,
                 AccessType.ReadFile))
                 throw new SecurityException("Access denied");
+
             if (!_utilities.HasAccess(
                 source,
                 username,
@@ -150,7 +175,16 @@ namespace magic.io.services
                 throw new SecurityException("Access denied");
 
             if (File.Exists(destination))
+            {
+                if (!_utilities.HasAccess(
+                    destination,
+                    username,
+                    roles,
+                    AccessType.DeleteFile))
+                    throw new SecurityException("Access denied");
+
                 File.Delete(destination);
+            }
 
             File.Move(source, destination);
         }
