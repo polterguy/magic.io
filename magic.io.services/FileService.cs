@@ -40,9 +40,14 @@ namespace magic.io.services
                 File.Exists(path)))
                 throw new SecurityException("Access denied");
 
-            return new FileStreamResult(
+            if (!File.Exists(path))
+                throw new ArgumentOutOfRangeException("File doesn't exist");
+
+            var result = new FileStreamResult(
                 File.OpenRead(path),
-                _utilities.GetContentType(path));
+                _utilities.GetMimeType(path));
+            result.FileDownloadName = Path.GetFileName(path);
+            return result;
         }
 
         public void Delete(string path, string username, string[] roles)

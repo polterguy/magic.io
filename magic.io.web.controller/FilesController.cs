@@ -34,20 +34,6 @@ namespace magic.io.web.controller
         }
 
         /// <summary>
-        /// Returns the specified file to caller
-        /// </summary>
-        /// <param name="file">File to return</param>
-        /// <returns>The specified file</returns>
-        [HttpGet]
-        public FileResult Download([Required] string file)
-        {
-            return _service.Get(
-                file,
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
-        }
-
-        /// <summary>
         /// Uploads a file to your server and stores it at the specified path
         /// </summary>
         /// <param name="file">The actual file</param>
@@ -67,6 +53,20 @@ namespace magic.io.web.controller
         }
 
         /// <summary>
+        /// Returns the specified file to caller
+        /// </summary>
+        /// <param name="file">File to return</param>
+        /// <returns>The specified file</returns>
+        [HttpGet]
+        public FileResult Download([Required] string file)
+        {
+            return _service.Get(
+                file,
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+        }
+
+        /// <summary>
         /// Deletes the specified file
         /// </summary>
         /// <param name="file">File to delete</param>
@@ -75,8 +75,8 @@ namespace magic.io.web.controller
         {
             _service.Delete(
                 file,
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
             return Ok();
         }
 

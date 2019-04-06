@@ -21,6 +21,7 @@ dotnet sln add modules/magic.io/magic.io.contracts/magic.io.contracts.csproj
 dotnet sln add modules/magic.io/magic.io.services/magic.io.services.csproj
 dotnet sln add modules/magic.io/magic.io.web.controller/magic.io.web.controller.csproj
 dotnet sln add modules/magic.io/magic.io.web.model/magic.io.web.model.csproj
+dotnet sln add modules/magic.io/magic.io.tests/magic.io.tests.csproj
 ```
 
 To add a reference to your controller and service using the dotnet CLI, you can issue the following terminal

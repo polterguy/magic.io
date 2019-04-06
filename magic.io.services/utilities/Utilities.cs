@@ -16,8 +16,7 @@ namespace magic.io.services.utilities
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            var filesExists = Directory.Exists("/files/");
-            Root = (configuration["io:root-folder"] ?? (filesExists ? "~/files/" : "~/"))
+            Root = configuration["io:root-folder"]
                 .Replace("~", Directory.GetCurrentDirectory())
                 .TrimEnd('/') + "/";
         }
@@ -37,7 +36,7 @@ namespace magic.io.services.utilities
             return Root + path?.TrimStart('/');
         }
 
-        public string GetContentType(string filename)
+        public string GetMimeType(string filename)
         {
             return MimeTypes.GetMimeType(filename);
         }
