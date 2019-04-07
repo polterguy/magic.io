@@ -40,12 +40,12 @@ namespace magic.io.web.controller
         /// <returns>List all folders inside of the specified folder</returns>
         [HttpGet]
         [Route("list-folders")]
-        public ActionResult<IEnumerable<string>> GetFolders(string folder)
+        public ActionResult<IEnumerable<string>> ListFolders(string folder)
         {
-            return Ok(_service.GetFolders(
+            return Ok(_service.ListFolders(
                 folder ?? "/",
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
         }
 
         /// <summary>
@@ -55,12 +55,12 @@ namespace magic.io.web.controller
         /// <returns>List all files inside of the specified folder</returns>
         [HttpGet]
         [Route("list-files")]
-        public ActionResult<IEnumerable<string>> GetFiles(string folder)
+        public ActionResult<IEnumerable<string>> ListFiles(string folder)
         {
-            return Ok(_service.GetFiles(
+            return Ok(_service.ListFiles(
                 folder ?? "/",
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray()));
         }
 
         /// <summary>
@@ -68,12 +68,12 @@ namespace magic.io.web.controller
         /// </summary>
         /// <param name="folder">Folder to delete</param>
         [HttpDelete]
-        public ActionResult DeleteFolder([Required] string folder)
+        public ActionResult Delete([Required] string folder)
         {
             _service.Delete(
                 folder,
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
             return Ok();
         }
 
@@ -82,12 +82,12 @@ namespace magic.io.web.controller
         /// </summary>
         /// <param name="folder">Folder to create</param>
         [HttpPut]
-        public ActionResult CreateFolder([Required] string folder)
+        public ActionResult Create([Required] string folder)
         {
             _service.Create(
                 folder,
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
             return Ok();
         }
 
@@ -102,8 +102,8 @@ namespace magic.io.web.controller
             _service.Move(
                 input.Source,
                 input.Destination,
-                User.Identity.Name,
-                User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
             return Ok();
         }
     }

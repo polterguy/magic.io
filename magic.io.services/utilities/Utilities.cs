@@ -37,8 +37,10 @@ namespace magic.io.services.utilities
             return "/" + absolute.Substring(Root.Length);
         }
 
-        public string GetFullPath(string path = null)
+        public string GetFullPath(string path = null, bool isFolder = false)
         {
+            if (isFolder)
+                return (Root + path?.Trim('/')).TrimEnd('/') + "/";
             return Root + path?.TrimStart('/');
         }
 

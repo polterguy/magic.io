@@ -26,12 +26,12 @@ namespace magic.io.services
 
         #region [ -- Interface implementations -- ]
 
-        public IEnumerable<string> GetFolders(
+        public IEnumerable<string> ListFolders(
             string path,
             string username,
             string[] roles)
         {
-            path = _utilities.GetFullPath(path);
+            path = _utilities.GetFullPath(path, true);
             if (!_utilities.HasAccess(
                 path,
                 username,
@@ -43,12 +43,12 @@ namespace magic.io.services
                 .Select(x => _utilities.GetRelativePath(x));
         }
 
-        public IEnumerable<string> GetFiles(
+        public IEnumerable<string> ListFiles(
             string path,
             string username,
             string[] roles)
         {
-            path = _utilities.GetFullPath(path);
+            path = _utilities.GetFullPath(path, true);
             if (!_utilities.HasAccess(
                 path,
                 username,
@@ -62,7 +62,7 @@ namespace magic.io.services
 
         public void Delete(string path, string username, string[] roles)
         {
-            path = _utilities.GetFullPath(path);
+            path = _utilities.GetFullPath(path, true);
             if (!_utilities.HasAccess(
                 path,
                 username,
@@ -70,18 +70,21 @@ namespace magic.io.services
                 AccessType.DeleteFolder))
                 throw new SecurityException("Access denied");
 
-            Directory.Delete(path);
+            Directory.Delete(path, true);
         }
 
         public void Create(string path, string username, string[] roles)
         {
-            path = _utilities.GetFullPath(path);
+            path = _utilities.GetFullPath(path, true);
             if (!_utilities.HasAccess(
                 path,
                 username,
                 roles,
                 AccessType.WriteFolder))
                 throw new SecurityException("Access denied");
+
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
 
             Directory.CreateDirectory(path);
         }
@@ -93,7 +96,7 @@ namespace magic.io.services
             if (string.IsNullOrEmpty(destination))
                 throw new ArgumentNullException(nameof(destination));
 
-            source = _utilities.GetFullPath(source);
+            source = _utilities.GetFullPath(source, true);
             if (!Directory.Exists(source))
                 throw new ArgumentOutOfRangeException($"Folder '{source}' does not exist");
 
@@ -110,9 +113,9 @@ namespace magic.io.services
                 AccessType.DeleteFolder))
                 throw new SecurityException("Access denied");
 
-            destination = _utilities.GetFullPath(destination);
+            destination = _utilities.GetFullPath(destination, true);
             if (Directory.Exists(destination))
-                throw new ArgumentException($"Folder '{destination}' already exists");
+                Directory.Delete(destination, true);
 
             if (!_utilities.HasAccess(
                 destination,

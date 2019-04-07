@@ -72,7 +72,7 @@ namespace magic.io.services
             if (file.Length <= 0)
                 throw new ArgumentException($"File '{file.FileName}' is empty");
 
-            var filename = _utilities.GetFullPath(folder) + file.FileName;
+            var filename = _utilities.GetFullPath(folder, true) + file.FileName;
             if (!_utilities.HasAccess(
                 filename,
                 username,

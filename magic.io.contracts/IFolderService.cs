@@ -9,9 +9,9 @@ namespace magic.io.contracts
 {
     public interface IFolderService
     {
-        IEnumerable<string> GetFolders(string path, string username, string[] roles);
+        IEnumerable<string> ListFolders(string path, string username, string[] roles);
 
-        IEnumerable<string> GetFiles(string path, string username, string[] roles);
+        IEnumerable<string> ListFiles(string path, string username, string[] roles);
 
         void Delete(string path, string username, string[] roles);
 

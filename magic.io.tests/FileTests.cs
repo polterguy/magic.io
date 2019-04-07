@@ -141,7 +141,7 @@ namespace magic.io.tests
 
         #region [ -- Private helper methods -- ]
 
-        Mock<IFormFile> CreateMoqFile(string content, string name)
+        static internal Mock<IFormFile> CreateMoqFile(string content, string name)
         {
             var fileMock = new Mock<IFormFile> { CallBase = true };
             var fileName = name;
