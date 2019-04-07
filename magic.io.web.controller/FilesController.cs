@@ -71,7 +71,7 @@ namespace magic.io.web.controller
         /// </summary>
         /// <param name="file">File to delete</param>
         [HttpDelete]
-        public ActionResult DeleteFile([Required] string file)
+        public ActionResult Delete([Required] string file)
         {
             _service.Delete(
                 file,

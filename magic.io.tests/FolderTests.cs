@@ -17,6 +17,7 @@ using magic.io.services;
 using magic.io.web.model;
 using magic.io.contracts;
 using magic.io.web.controller;
+using System.Security;
 
 namespace magic.io.tests
 {
@@ -31,7 +32,7 @@ namespace magic.io.tests
             AssertHelper.Single(controller.Create("foo"));
             var result = AssertHelper.List(controller.ListFolders("/"));
             Assert.True(result.Count() > 0);
-            Assert.True(result.Any(x => x == "/foo"));
+            Assert.Contains("/foo", result);
         }
 
         [Fact]
@@ -57,7 +58,7 @@ namespace magic.io.tests
             var file = FileTests.CreateMoqFile("foo content", "foo.txt");
             var filesControllers = CreateFilesController();
             AssertHelper.Single(filesControllers.Upload(file.Object, "foo"));
-            AssertHelper.Single(filesControllers.DeleteFile("foo/foo.txt"));
+            AssertHelper.Single(filesControllers.Delete("foo/foo.txt"));
             var files = AssertHelper.List(controller.ListFiles("foo"));
             Assert.Empty(files);
         }
@@ -74,8 +75,56 @@ namespace magic.io.tests
             }));
             var result = AssertHelper.List(controller.ListFolders("/"));
             Assert.True(result.Count() > 0);
-            Assert.True(result.Any(x => x == "/bar"));
-            Assert.False(result.Any(x => x == "/foo"));
+            Assert.Contains("/bar", result);
+            Assert.DoesNotContain("/foo", result);
+        }
+
+        [Fact]
+        public void Authorized_Fail_01()
+        {
+            var controller = CreateController(true);
+            Assert.Throws<SecurityException>(() => controller.Create("foo"));
+        }
+
+        [Fact]
+        public void Authorized_Fail_02()
+        {
+            var controller = CreateController();
+            AssertHelper.Single(controller.Create("foo"));
+
+            controller = CreateController(true);
+            Assert.Throws<SecurityException>(() => controller.ListFolders("/"));
+        }
+
+        [Fact]
+        public void Authorized_Fail_03()
+        {
+            var controller = CreateController(true);
+            Assert.Throws<SecurityException>(() => controller.ListFiles("/"));
+        }
+
+        [Fact]
+        public void Authorized_Fail_04()
+        {
+            var controller = CreateController();
+            AssertHelper.Single(controller.Create("foo"));
+
+            controller = CreateController(true);
+            Assert.Throws<SecurityException>(() => controller.Move(new CopyMoveModel
+            {
+                Source = "/foo",
+                Destination = "/bar",
+            }));
+        }
+
+        [Fact]
+        public void Authorized_Fail_05()
+        {
+            var controller = CreateController();
+            AssertHelper.Single(controller.Create("foo"));
+
+            controller = CreateController(true);
+            Assert.Throws<SecurityException>(() => controller.Delete("/foo"));
         }
 
         #endregion
@@ -96,7 +145,7 @@ namespace magic.io.tests
             return kernel.Get<FilesController>();
         }
 
-        FoldersController CreateController()
+        FoldersController CreateController(bool authorize = false)
         {
             var kernel = new StandardKernel();
 
@@ -106,6 +155,11 @@ namespace magic.io.tests
             var mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("~/");
             kernel.Bind<IConfiguration>().ToConstant(mockConfiguration.Object);
+
+            if (authorize)
+            {
+                kernel.Bind<IAuthorize>().To<FileTests.Authorize>();
+            }
 
             return kernel.Get<FoldersController>();
         }

@@ -16,6 +16,7 @@ using magic.io.services;
 using magic.io.web.model;
 using magic.io.contracts;
 using magic.io.web.controller;
+using System.Security;
 
 namespace magic.io.tests
 {
@@ -75,7 +76,7 @@ namespace magic.io.tests
             var fileMock = CreateMoqFile("File content", "test.txt");
             AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
 
-            AssertHelper.Single(controller.DeleteFile("/test.txt"));
+            AssertHelper.Single(controller.Delete("/test.txt"));
 
             Assert.Throws<FileNotFoundException>(() => controller.Download("/test.txt"));
         }
@@ -137,6 +138,66 @@ namespace magic.io.tests
             Assert.Throws<FileNotFoundException>(() => controller.Download("/test.txt"));
         }
 
+        [Fact]
+        public void Authorized_Fail_01()
+        {
+            var controller = CreateController(true);
+            var fileMock = CreateMoqFile("File content", "test.txt");
+            Assert.Throws<SecurityException>(() => controller.Upload(fileMock.Object, "/"));
+        }
+
+        [Fact]
+        public void Authorized_Fail_02()
+        {
+            var controller = CreateController();
+            var fileMock = CreateMoqFile("File content", "test.txt");
+            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+
+            controller = CreateController(true);
+            Assert.Throws<SecurityException>(() => controller.Download("/test.txt"));
+        }
+
+        [Fact]
+        public void Authorized_Fail_03()
+        {
+            var controller = CreateController();
+            var fileMock = CreateMoqFile("File content", "test.txt");
+            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+
+            controller = CreateController(true);
+            Assert.Throws<SecurityException>(() => controller.Move(new CopyMoveModel
+            {
+                Source = "/test.txt",
+                Destination = "/test2.txt",
+            }));
+        }
+
+        [Fact]
+        public void Authorized_Fail_04()
+        {
+            var controller = CreateController();
+            var fileMock = CreateMoqFile("File content", "test.txt");
+            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+
+            controller = CreateController(true);
+            Assert.Throws<SecurityException>(() => controller.Copy(new CopyMoveModel
+            {
+                Source = "/test.txt",
+                Destination = "/test2.txt",
+            }));
+        }
+
+        [Fact]
+        public void Authorized_Fail_05()
+        {
+            var controller = CreateController();
+            var fileMock = CreateMoqFile("File content", "test.txt");
+            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+
+            controller = CreateController(true);
+            Assert.Throws<SecurityException>(() => controller.Delete("/test.txt"));
+        }
+
         #endregion
 
         #region [ -- Private helper methods -- ]
@@ -157,7 +218,15 @@ namespace magic.io.tests
             return fileMock;
         }
 
-        FilesController CreateController()
+        internal class Authorize : IAuthorize
+        {
+            bool IAuthorize.Authorize(string path, string username, string[] roles, AccessType type)
+            {
+                return false;
+            }
+        }
+
+        FilesController CreateController(bool authorize = false)
         {
             var kernel = new StandardKernel();
 
@@ -167,6 +236,11 @@ namespace magic.io.tests
             var mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("~/");
             kernel.Bind<IConfiguration>().ToConstant(mockConfiguration.Object);
+
+            if (authorize)
+            {
+                kernel.Bind<IAuthorize>().To<Authorize>();
+            }
 
             return kernel.Get<FilesController>();
         }
