@@ -29,8 +29,8 @@ namespace magic.io.tests
         public void CreateFolderListFolders()
         {
             var controller = CreateController();
-            AssertHelper.Single(controller.Create("foo"));
-            var result = AssertHelper.List(controller.ListFolders("/"));
+            controller.Create("foo");
+            var result = controller.ListFolders("/");
             Assert.True(result.Count() > 0);
             Assert.Contains("/foo", result);
         }
@@ -39,12 +39,12 @@ namespace magic.io.tests
         public void CreateFolderAndFileListFiles()
         {
             var controller = CreateController();
-            AssertHelper.Single(controller.Create("foo"));
-            var result = AssertHelper.List(controller.ListFolders("/"));
+            controller.Create("foo");
+            var result = controller.ListFolders("/");
             var file = FileTests.CreateMoqFile("foo content", "foo.txt");
             var filesControllers = CreateFilesController();
-            AssertHelper.Single(filesControllers.Upload(file.Object, "foo"));
-            var files = AssertHelper.List(controller.ListFiles("foo"));
+            filesControllers.Upload(file.Object, "foo");
+            var files = controller.ListFiles("foo");
             Assert.Single(files);
             Assert.Equal("/foo/foo.txt", files.First());
         }
@@ -53,13 +53,13 @@ namespace magic.io.tests
         public void CreateFolderAndFileDeleteFileListFiles()
         {
             var controller = CreateController();
-            AssertHelper.Single(controller.Create("foo"));
-            var result = AssertHelper.List(controller.ListFolders("/"));
+            controller.Create("foo");
+            var result = controller.ListFolders("/");
             var file = FileTests.CreateMoqFile("foo content", "foo.txt");
             var filesControllers = CreateFilesController();
-            AssertHelper.Single(filesControllers.Upload(file.Object, "foo"));
-            AssertHelper.Single(filesControllers.Delete("foo/foo.txt"));
-            var files = AssertHelper.List(controller.ListFiles("foo"));
+            filesControllers.Upload(file.Object, "foo");
+            filesControllers.Delete("foo/foo.txt");
+            var files = controller.ListFiles("foo");
             Assert.Empty(files);
         }
 
@@ -67,13 +67,13 @@ namespace magic.io.tests
         public void CreateFolderMoveFolder()
         {
             var controller = CreateController();
-            AssertHelper.Single(controller.Create("foo"));
-            AssertHelper.Single(controller.Move(new CopyMoveModel
+            controller.Create("foo");
+            controller.Move(new CopyMoveModel
             {
                 Source = "foo",
                 Destination = "bar"
-            }));
-            var result = AssertHelper.List(controller.ListFolders("/"));
+            });
+            var result = controller.ListFolders("/");
             Assert.True(result.Count() > 0);
             Assert.Contains("/bar", result);
             Assert.DoesNotContain("/foo", result);
@@ -90,7 +90,7 @@ namespace magic.io.tests
         public void Authorized_Fail_02()
         {
             var controller = CreateController();
-            AssertHelper.Single(controller.Create("foo"));
+            controller.Create("foo");
 
             controller = CreateController(true);
             Assert.Throws<SecurityException>(() => controller.ListFolders("/"));
@@ -107,7 +107,7 @@ namespace magic.io.tests
         public void Authorized_Fail_04()
         {
             var controller = CreateController();
-            AssertHelper.Single(controller.Create("foo"));
+            controller.Create("foo");
 
             controller = CreateController(true);
             Assert.Throws<SecurityException>(() => controller.Move(new CopyMoveModel
@@ -121,7 +121,7 @@ namespace magic.io.tests
         public void Authorized_Fail_05()
         {
             var controller = CreateController();
-            AssertHelper.Single(controller.Create("foo"));
+            controller.Create("foo");
 
             controller = CreateController(true);
             Assert.Throws<SecurityException>(() => controller.Delete("/foo"));

@@ -29,7 +29,7 @@ namespace magic.io.tests
         {
             var controller = CreateController();
             var fileMock = CreateMoqFile("File content", "test.txt");
-            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+            controller.Upload(fileMock.Object, "/");
 
             var result = controller.Download("/test.txt");
             Assert.Equal("test.txt", result.FileDownloadName);
@@ -54,10 +54,10 @@ namespace magic.io.tests
         {
             var controller = CreateController();
             var fileMock = CreateMoqFile("File content 1", "test.txt");
-            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+            controller.Upload(fileMock.Object, "/");
 
             fileMock = CreateMoqFile("File content 2", "test.txt");
-            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+            controller.Upload(fileMock.Object, "/");
 
             var result = controller.Download("/test.txt");
             Assert.Equal("test.txt", result.FileDownloadName);
@@ -74,9 +74,9 @@ namespace magic.io.tests
         {
             var controller = CreateController();
             var fileMock = CreateMoqFile("File content", "test.txt");
-            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+            controller.Upload(fileMock.Object, "/");
 
-            AssertHelper.Single(controller.Delete("/test.txt"));
+            controller.Delete("/test.txt");
 
             Assert.Throws<FileNotFoundException>(() => controller.Download("/test.txt"));
         }
@@ -86,13 +86,13 @@ namespace magic.io.tests
         {
             var controller = CreateController();
             var fileMock = CreateMoqFile("File content", "test.txt");
-            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+            controller.Upload(fileMock.Object, "/");
 
-            AssertHelper.Single(controller.Copy(new CopyMoveModel
+            controller.Copy(new CopyMoveModel
             {
                 Source = "/test.txt",
                 Destination = "/test2.txt",
-            }));
+            });
 
             var result = controller.Download("/test2.txt");
             Assert.Equal("test2.txt", result.FileDownloadName);
@@ -118,13 +118,13 @@ namespace magic.io.tests
         {
             var controller = CreateController();
             var fileMock = CreateMoqFile("File content", "test.txt");
-            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+            controller.Upload(fileMock.Object, "/");
 
-            AssertHelper.Single(controller.Move(new CopyMoveModel
+            controller.Move(new CopyMoveModel
             {
                 Source = "/test.txt",
                 Destination = "/test2.txt",
-            }));
+            });
 
             var result = controller.Download("/test2.txt");
             Assert.Equal("test2.txt", result.FileDownloadName);
@@ -151,7 +151,7 @@ namespace magic.io.tests
         {
             var controller = CreateController();
             var fileMock = CreateMoqFile("File content", "test.txt");
-            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+            controller.Upload(fileMock.Object, "/");
 
             controller = CreateController(true);
             Assert.Throws<SecurityException>(() => controller.Download("/test.txt"));
@@ -162,7 +162,7 @@ namespace magic.io.tests
         {
             var controller = CreateController();
             var fileMock = CreateMoqFile("File content", "test.txt");
-            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+            controller.Upload(fileMock.Object, "/");
 
             controller = CreateController(true);
             Assert.Throws<SecurityException>(() => controller.Move(new CopyMoveModel
@@ -177,7 +177,7 @@ namespace magic.io.tests
         {
             var controller = CreateController();
             var fileMock = CreateMoqFile("File content", "test.txt");
-            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+            controller.Upload(fileMock.Object, "/");
 
             controller = CreateController(true);
             Assert.Throws<SecurityException>(() => controller.Copy(new CopyMoveModel
@@ -192,7 +192,7 @@ namespace magic.io.tests
         {
             var controller = CreateController();
             var fileMock = CreateMoqFile("File content", "test.txt");
-            AssertHelper.Single(controller.Upload(fileMock.Object, "/"));
+            controller.Upload(fileMock.Object, "/");
 
             controller = CreateController(true);
             Assert.Throws<SecurityException>(() => controller.Delete("/test.txt"));

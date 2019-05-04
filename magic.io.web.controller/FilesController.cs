@@ -42,14 +42,13 @@ namespace magic.io.web.controller
         [HttpPost]
         [DisableRequestSizeLimit]
         [Consumes("multipart/form-data")]
-        public ActionResult Upload([Required] [FromForm] IFormFile file, string folder)
+        public void Upload([Required] [FromForm] IFormFile file, string folder)
         {
             _service.Upload(
                 file,
                 folder ?? "/",
                 User?.Identity.Name,
                 User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
-            return Ok();
         }
 
         /// <summary>
@@ -71,13 +70,12 @@ namespace magic.io.web.controller
         /// </summary>
         /// <param name="file">File to delete</param>
         [HttpDelete]
-        public ActionResult Delete([Required] string file)
+        public void Delete([Required] string file)
         {
             _service.Delete(
                 file,
                 User?.Identity.Name,
                 User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
-            return Ok();
         }
 
         /// <summary>
@@ -86,14 +84,13 @@ namespace magic.io.web.controller
         /// <param name="input">Source and destination file</param>
         [HttpPost]
         [Route("copy")]
-        public ActionResult Copy([Required] www.CopyMoveModel input)
+        public void Copy([Required] www.CopyMoveModel input)
         {
             _service.Copy(
                 input.Source,
                 input.Destination,
                 User?.Identity.Name,
                 User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
-            return Ok();
         }
 
         /// <summary>
@@ -102,14 +99,13 @@ namespace magic.io.web.controller
         /// <param name="input">Source and destination file</param>
         [HttpPost]
         [Route("move")]
-        public ActionResult Move([Required] www.CopyMoveModel input)
+        public void Move([Required] www.CopyMoveModel input)
         {
             _service.Move(
                 input.Source,
                 input.Destination,
                 User?.Identity.Name,
                 User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
-            return Ok();
         }
     }
 }
