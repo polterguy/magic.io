@@ -13,10 +13,10 @@ namespace magic.io.services.init
 {
     class ConfigureServices : IConfigureServices
     {
-        public void Configure(IServiceCollection kernel, IConfiguration configuration)
+        public void Configure(IServiceCollection services, IConfiguration configuration)
         {
-            kernel.AddTransient<IFileService, FileService>();
-            kernel.AddTransient<IFolderService, FolderService>();
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IFolderService, FolderService>();
         }
     }
 }
