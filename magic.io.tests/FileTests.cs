@@ -5,18 +5,18 @@
 
 using System;
 using System.IO;
+using System.Security;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;
-using Ninject;
 using magic.tests;
 using magic.io.services;
 using magic.io.web.model;
 using magic.io.contracts;
 using magic.io.web.controller;
-using System.Security;
 
 namespace magic.io.tests
 {
@@ -228,21 +228,20 @@ namespace magic.io.tests
 
         FilesController CreateController(bool authorize = false)
         {
-            var kernel = new StandardKernel();
-
-            kernel.Bind<IFileService>().To<FileService>();
-            kernel.Bind<FilesController>().ToSelf();
+            var kernel = new ServiceCollection();
+            kernel.AddTransient<IFileService, FileService>();
+            kernel.AddTransient<FilesController>();
 
             var mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("~/");
-            kernel.Bind<IConfiguration>().ToConstant(mockConfiguration.Object);
+            kernel.AddTransient<IConfiguration>((svc) => mockConfiguration.Object);
 
             if (authorize)
             {
-                kernel.Bind<IAuthorize>().To<Authorize>();
+                kernel.AddTransient<IAuthorize, Authorize>();
             }
-
-            return kernel.Get<FilesController>();
+            var provider = kernel.BuildServiceProvider();
+            return provider.GetService(typeof(FilesController)) as FilesController;
         }
 
         #endregion

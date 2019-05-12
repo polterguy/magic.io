@@ -5,18 +5,18 @@
  */
 
 using Microsoft.Extensions.Configuration;
-using Ninject;
 using magic.io.contracts;
 using magic.common.contracts;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace magic.io.services.init
 {
-    class ConfigureNinject : IConfigureNinject
+    class ConfigureServices : IConfigureServices
     {
-        public void Configure(IKernel kernel, IConfiguration configuration)
+        public void Configure(IServiceCollection kernel, IConfiguration configuration)
         {
-            kernel.Bind<IFileService>().To<FileService>();
-            kernel.Bind<IFolderService>().To<FolderService>();
+            kernel.AddTransient<IFileService, FileService>();
+            kernel.AddTransient<IFolderService, FolderService>();
         }
     }
 }

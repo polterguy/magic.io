@@ -6,16 +6,15 @@
 using System;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-using Ninject;
 using magic.io.contracts;
 
 namespace magic.io.services.utilities
 {
     public class Utilities
     {
-        readonly IKernel _kernel;
+        readonly IServiceProvider _kernel;
 
-        public Utilities(IConfiguration configuration, IKernel kernel)
+        public Utilities(IConfiguration configuration, IServiceProvider kernel)
         {
             _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
 
@@ -55,7 +54,7 @@ namespace magic.io.services.utilities
             string[] roles,
             AccessType type)
         {
-            var authorize = _kernel.TryGet<IAuthorize>();
+            var authorize = _kernel.GetService(typeof(IAuthorize)) as IAuthorize;
             if (authorize == null)
                 return true;
             return authorize.Authorize(path, username, roles, type);

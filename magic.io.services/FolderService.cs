@@ -9,7 +9,6 @@ using System.Linq;
 using System.Security;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using Ninject;
 using magic.io.contracts;
 using magic.io.services.utilities;
 
@@ -19,7 +18,7 @@ namespace magic.io.services
     {
         readonly Utilities _utilities;
 
-        public FolderService(IConfiguration configuration, IKernel kernel)
+        public FolderService(IConfiguration configuration, IServiceProvider kernel)
         {
             _utilities = new Utilities(configuration, kernel);
         }

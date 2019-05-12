@@ -6,18 +6,18 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Security;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;
-using Ninject;
 using magic.tests;
 using magic.io.services;
 using magic.io.web.model;
 using magic.io.contracts;
 using magic.io.web.controller;
-using System.Security;
 
 namespace magic.io.tests
 {
@@ -133,35 +133,33 @@ namespace magic.io.tests
 
         FilesController CreateFilesController()
         {
-            var kernel = new StandardKernel();
-
-            kernel.Bind<IFileService>().To<FileService>();
-            kernel.Bind<FilesController>().ToSelf();
+            var kernel = new ServiceCollection();
+            kernel.AddTransient<IFileService, FileService>();
+            kernel.AddTransient<FilesController>();
 
             var mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("~/");
-            kernel.Bind<IConfiguration>().ToConstant(mockConfiguration.Object);
-
-            return kernel.Get<FilesController>();
+            kernel.AddTransient<IConfiguration>((svc) => mockConfiguration.Object);
+            var provider = kernel.BuildServiceProvider();
+            return provider.GetService(typeof(FilesController)) as FilesController;
         }
 
         FoldersController CreateController(bool authorize = false)
         {
-            var kernel = new StandardKernel();
-
-            kernel.Bind<IFolderService>().To<FolderService>();
-            kernel.Bind<FoldersController>().ToSelf();
+            var kernel = new ServiceCollection();
+            kernel.AddTransient<IFolderService, FolderService>();
+            kernel.AddTransient<FoldersController>();
 
             var mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("~/");
-            kernel.Bind<IConfiguration>().ToConstant(mockConfiguration.Object);
+            kernel.AddTransient<IConfiguration>((svc) => mockConfiguration.Object);
 
             if (authorize)
             {
-                kernel.Bind<IAuthorize>().To<FileTests.Authorize>();
+                kernel.AddTransient<IAuthorize, FileTests.Authorize>();
             }
-
-            return kernel.Get<FoldersController>();
+            var provider = kernel.BuildServiceProvider();
+            return provider.GetService(typeof(FoldersController)) as FoldersController;
         }
 
         #endregion
