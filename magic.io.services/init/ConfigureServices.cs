@@ -5,9 +5,9 @@
  */
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using magic.io.contracts;
 using magic.common.contracts;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace magic.io.services.init
 {
