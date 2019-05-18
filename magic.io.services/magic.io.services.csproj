@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\magic.common\magic.common.contracts\magic.common.contracts.csproj" />
+    <ProjectReference Include="..\..\..\lib\magic.common\magic.common.contracts\magic.common.contracts.csproj" />
     <ProjectReference Include="..\magic.io.contracts\magic.io.contracts.csproj" />
   </ItemGroup>
 
