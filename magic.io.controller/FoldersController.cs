@@ -8,11 +8,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Mvc;
 using magic.io.contracts;
-using www = magic.io.web.model;
 
-namespace magic.io.web.controller
+namespace magic.io.controller
 {
     /// <summary>
     /// IO controller for manipulating files and folders on your server
@@ -79,12 +79,12 @@ namespace magic.io.web.controller
         /// <summary>
         /// Creates the specified folder
         /// </summary>
-        /// <param name="folder">Folder to create</param>
+        /// <param name="payload">Payload to create, should contain at least 'folder' property</param>
         [HttpPut]
-        public void Create([Required] string folder)
+        public void Create([Required] [FromBody] JObject payload)
         {
             _service.Create(
-                folder,
+                payload["folder"].Value<string>(),
                 User?.Identity.Name,
                 User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
         }
@@ -95,11 +95,39 @@ namespace magic.io.web.controller
         /// <param name="input">Source and destination folder</param>
         [HttpPost]
         [Route("move")]
-        public void Move([Required] www.CopyMoveModel input)
+        public void Move([Required] CopyMoveModel input)
         {
             _service.Move(
                 input.Source,
                 input.Destination,
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+        }
+
+        /// <summary>
+        /// Returns true if the specified folder exists.
+        /// </summary>
+        /// <param name="path">Folder to check for</param>
+        [HttpGet]
+        [Route("exists")]
+        public bool Exists([Required] string path)
+        {
+            return _service.FolderExists(
+                path,
+                User?.Identity.Name,
+                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
+        }
+
+        /// <summary>
+        /// Returns true if the specified file exists.
+        /// </summary>
+        /// <param name="path">File to check for</param>
+        [HttpGet]
+        [Route("file-exists")]
+        public bool FileExists([Required] string path)
+        {
+            return _service.FileExists(
+                path,
                 User?.Identity.Name,
                 User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
         }

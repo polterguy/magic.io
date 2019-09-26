@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{0080EF1F-A652-4498-BE59-F3FFFB3F33B2}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "magic.io.contracts", "magic.io.contracts\magic.io.contracts.csproj", "{F62398C0-2CE1-426D-A773-18363674BE57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "magic.io.services", "magic.io.services\magic.io.services.csproj", "{7E9C1943-5FC3-40F5-8D40-A4179C1C01EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "magic.io.controller", "magic.io.controller\magic.io.controller.csproj", "{E3E03E9D-19D7-46CE-B622-D9CA60C8B473}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "magic.io.tests", "magic.io.tests\magic.io.tests.csproj", "{2A663DDA-4CE6-401D-BBBE-42167DD01529}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F62398C0-2CE1-426D-A773-18363674BE57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F62398C0-2CE1-426D-A773-18363674BE57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F62398C0-2CE1-426D-A773-18363674BE57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F62398C0-2CE1-426D-A773-18363674BE57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E9C1943-5FC3-40F5-8D40-A4179C1C01EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E9C1943-5FC3-40F5-8D40-A4179C1C01EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E9C1943-5FC3-40F5-8D40-A4179C1C01EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E9C1943-5FC3-40F5-8D40-A4179C1C01EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3E03E9D-19D7-46CE-B622-D9CA60C8B473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3E03E9D-19D7-46CE-B622-D9CA60C8B473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3E03E9D-19D7-46CE-B622-D9CA60C8B473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3E03E9D-19D7-46CE-B622-D9CA60C8B473}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A663DDA-4CE6-401D-BBBE-42167DD01529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A663DDA-4CE6-401D-BBBE-42167DD01529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A663DDA-4CE6-401D-BBBE-42167DD01529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A663DDA-4CE6-401D-BBBE-42167DD01529}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {41CD749B-4982-4ABA-9FAD-4F0813878B33}
+	EndGlobalSection
+EndGlobal

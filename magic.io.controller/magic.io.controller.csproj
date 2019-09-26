@@ -2,10 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Thomas Hansen</Authors>
+    <Description>Controller endpoint for magic</Description>
+    <Copyright>Thomas Hansen, thomas@gaiasoul.com</Copyright>
+    <PackageProjectUrl>https://github.com/polterguy/magic.io</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>magic.io.web.controller.xml</DocumentationFile>
+    <DocumentationFile>magic.io.controller.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\magic.io.contracts\magic.io.contracts.csproj" />
-    <ProjectReference Include="..\magic.io.web.model\magic.io.web.model.csproj" />
   </ItemGroup>
 
 </Project>

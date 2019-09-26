@@ -1,0 +1,8 @@
+﻿language: csharp
+solution: magic.io.sln
+mono: none
+dotnet: 2.2.402
+script:
+ - dotnet restore
+ - dotnet build
+ - dotnet test

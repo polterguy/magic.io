@@ -30,7 +30,7 @@ namespace magic.io.services.utilities
 
         public string GetRelativePath(string absolute)
         {
-            if (absolute.IndexOf(Root) != 0)
+            if (absolute.IndexOf(Root, StringComparison.InvariantCulture) != 0)
                 throw new ArgumentOutOfRangeException($"'{absolute}' is not an absolute path and hence cannot be relativized");
 
             return "/" + absolute.Substring(Root.Length);
@@ -45,6 +45,8 @@ namespace magic.io.services.utilities
 
         public string GetMimeType(string filename)
         {
+            if (filename.EndsWith(".hl", StringComparison.InvariantCulture))
+                return "text/plain";
             return MimeTypes.GetMimeType(filename);
         }
 

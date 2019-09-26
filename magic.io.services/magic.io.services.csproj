@@ -2,6 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Thomas Hansen</Authors>
+    <Product>magic.io.services</Product>
+    <Description>Service implementation for magic.io</Description>
+    <Copyright>Thomas Hansen, thomas@gaiasoul.com</Copyright>
+    <PackageProjectUrl>https://github.com/polterguy/magic.io</PackageProjectUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\projects\personal\magic.io\magic.io.services\magic.io.services.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\projects\personal\magic.io\magic.io.services\magic.io.services.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\lib\magic.common\magic.common.contracts\magic.common.contracts.csproj" />
     <ProjectReference Include="..\magic.io.contracts\magic.io.contracts.csproj" />
   </ItemGroup>
 

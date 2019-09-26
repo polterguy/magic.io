@@ -39,7 +39,7 @@ namespace magic.io.services
                 throw new SecurityException("Access denied");
 
             return Directory.GetDirectories(path)
-                .Select(x => _utilities.GetRelativePath(x));
+                .Select(x => _utilities.GetRelativePath(x) + "/");
         }
 
         public IEnumerable<string> ListFiles(
@@ -56,7 +56,8 @@ namespace magic.io.services
                 throw new SecurityException("Access denied");
 
             return Directory.GetFiles(path)
-                .Select(x => _utilities.GetRelativePath(x));
+                .Where(x => !x.EndsWith(".DS_Store")) // Removing Mac special files.
+                .Select(_utilities.GetRelativePath);
         }
 
         public void Delete(string path, string username, string[] roles)
@@ -124,6 +125,40 @@ namespace magic.io.services
                 throw new SecurityException("Access denied");
 
             Directory.Move(source, destination);
+        }
+
+        public bool FolderExists(string path, string username, string[] roles)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException(nameof(path));
+
+            path = _utilities.GetFullPath(path, true);
+
+            if (!_utilities.HasAccess(
+                path,
+                username,
+                roles,
+                AccessType.ReadFolder))
+                throw new SecurityException("Access denied");
+
+            return Directory.Exists(path);
+        }
+
+        public bool FileExists(string path, string username, string[] roles)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException(nameof(path));
+
+            path = _utilities.GetFullPath(path, false);
+
+            if (!_utilities.HasAccess(
+                path,
+                username,
+                roles,
+                AccessType.ReadFile))
+                throw new SecurityException("Access denied");
+
+            return File.Exists(path);
         }
 
         #endregion
