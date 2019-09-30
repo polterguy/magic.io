@@ -10,12 +10,8 @@
     <PackageProjectUrl>https://github.com/polterguy/magic.io</PackageProjectUrl>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\projects\personal\magic.io\magic.io.services\magic.io.services.xml</DocumentationFile>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>C:\projects\personal\magic.io\magic.io.services\magic.io.services.xml</DocumentationFile>
+    <DocumentationFile>bin/Release/netstandard2.0/magic.io.services.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
