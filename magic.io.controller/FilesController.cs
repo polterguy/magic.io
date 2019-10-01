@@ -14,7 +14,7 @@ using magic.io.contracts;
 namespace magic.io.controller
 {
     /// <summary>
-    /// IO controller for manipulating files and folders on your server
+    /// IO controller for manipulating files on your server.
     /// </summary>
     [Route("api/files")]
     [Consumes("application/json")]
@@ -24,20 +24,19 @@ namespace magic.io.controller
         readonly IFileService _service;
 
         /// <summary>
-        /// Creates a new instance of your files controller
+        /// Creates a new instance of your files controller.
         /// </summary>
-        /// <param name="service">Service containing business logic</param>
+        /// <param name="service">Service containing implementation.</param>
         public FilesController(IFileService service)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         /// <summary>
-        /// Uploads a file to your server and stores it at the specified path
+        /// Uploads a file to your server and stores it at the specified path.
         /// </summary>
-        /// <param name="file">The actual file</param>
-        /// <param name="folder">The folder on your server where you want to store your file</param>
-        /// <returns>200 if file was successfully saved</returns>
+        /// <param name="file">The actual file.</param>
+        /// <param name="folder">The folder on your server where you want to store your file.</param>
         [HttpPost]
         [DisableRequestSizeLimit]
         [Consumes("multipart/form-data")]
@@ -51,10 +50,10 @@ namespace magic.io.controller
         }
 
         /// <summary>
-        /// Returns the specified file to caller
+        /// Downloads the specified file to client.
         /// </summary>
-        /// <param name="file">File to return</param>
-        /// <returns>The specified file</returns>
+        /// <param name="file">File to download.</param>
+        /// <returns>The specified file.</returns>
         [HttpGet]
         public FileResult Download([Required] string file)
         {
@@ -65,9 +64,9 @@ namespace magic.io.controller
         }
 
         /// <summary>
-        /// Deletes the specified file
+        /// Deletes the specified file.
         /// </summary>
-        /// <param name="file">File to delete</param>
+        /// <param name="file">File path to delete.</param>
         [HttpDelete]
         public void Delete([Required] string file)
         {
@@ -78,9 +77,9 @@ namespace magic.io.controller
         }
 
         /// <summary>
-        /// Copies the specified source file to its given destination
+        /// Copies the specified source file to its given destination.
         /// </summary>
-        /// <param name="input">Source and destination file</param>
+        /// <param name="input">Source and destination file path.</param>
         [HttpPost]
         [Route("copy")]
         public void Copy([Required] CopyMoveModel input)
@@ -93,9 +92,9 @@ namespace magic.io.controller
         }
 
         /// <summary>
-        /// Moves the specified source file to its given destination
+        /// Moves the specified source file to its given destination.
         /// </summary>
-        /// <param name="input">Source and destination file</param>
+        /// <param name="input">Source and destination file path.</param>
         [HttpPost]
         [Route("move")]
         public void Move([Required] CopyMoveModel input)

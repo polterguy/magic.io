@@ -24,11 +24,7 @@ namespace magic.io.tests
         public void CreateFolderListFolders()
         {
             var controller = CreateController();
-            var jObj = new JObject
-            {
-                ["folder"] = "/foo/"
-            };
-            controller.Create(jObj);
+            controller.Create(new CreateModel { Path = "/foo/" });
             var result = controller.ListFolders("/");
             Assert.True(result.Any());
             Assert.Contains("/foo/", result);
@@ -38,11 +34,7 @@ namespace magic.io.tests
         public void CreateFolderAndFileListFiles()
         {
             var controller = CreateController();
-            var jObj = new JObject
-            {
-                ["folder"] = "foo"
-            };
-            controller.Create(jObj);
+            controller.Create(new CreateModel { Path = "foo" });
             var file = FileTests.CreateMoqFile("foo content", "foo.txt");
             var filesControllers = CreateFilesController();
             filesControllers.Upload(file.Object, "foo");
@@ -55,11 +47,7 @@ namespace magic.io.tests
         public void CreateFolderAndFileDeleteFileListFiles()
         {
             var controller = CreateController();
-            var jObj = new JObject
-            {
-                ["folder"] = "foo"
-            };
-            controller.Create(jObj);
+            controller.Create(new CreateModel { Path = "foo" });
             var result = controller.ListFolders("/");
             var file = FileTests.CreateMoqFile("foo content", "foo.txt");
             var filesControllers = CreateFilesController();
@@ -73,11 +61,7 @@ namespace magic.io.tests
         public void CreateFolderMoveFolder()
         {
             var controller = CreateController();
-            var jObj = new JObject
-            {
-                ["folder"] = "/foo"
-            };
-            controller.Create(jObj);
+            controller.Create(new CreateModel { Path = "/foo" });
             controller.Move(new CopyMoveModel
             {
                 Source = "/foo",
@@ -95,11 +79,7 @@ namespace magic.io.tests
             var controller = CreateController(true);
             Assert.Throws<SecurityException>(() =>
             {
-                var jObj = new JObject
-                {
-                    ["folder"] = "foo"
-                };
-                controller.Create(jObj);
+                controller.Create(new CreateModel { Path = "foo" });
             });
         }
 
@@ -107,11 +87,7 @@ namespace magic.io.tests
         public void Authorized_Fail_02()
         {
             var controller = CreateController();
-            var jObj = new JObject
-            {
-                ["folder"] = "foo"
-            };
-            controller.Create(jObj);
+            controller.Create(new CreateModel { Path = "foo" });
 
             controller = CreateController(true);
             Assert.Throws<SecurityException>(() => controller.ListFolders("/"));
@@ -128,11 +104,7 @@ namespace magic.io.tests
         public void Authorized_Fail_04()
         {
             var controller = CreateController();
-            var jObj = new JObject
-            {
-                ["folder"] = "foo"
-            };
-            controller.Create(jObj);
+            controller.Create(new CreateModel { Path = "foo" });
 
             controller = CreateController(true);
             Assert.Throws<SecurityException>(() => controller.Move(new CopyMoveModel
@@ -146,11 +118,7 @@ namespace magic.io.tests
         public void Authorized_Fail_05()
         {
             var controller = CreateController();
-            var jObj = new JObject
-            {
-                ["folder"] = "foo"
-            };
-            controller.Create(jObj);
+            controller.Create(new CreateModel { Path = "foo" });
 
             controller = CreateController(true);
             Assert.Throws<SecurityException>(() => controller.Delete("/foo"));

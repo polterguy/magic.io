@@ -3,10 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Thomas Hansen</Authors>
-    <Description>Controller endpoint for magic</Description>
+    <Description>File/folder controller endpoints for magic</Description>
     <Copyright>Thomas Hansen, thomas@gaiasoul.com</Copyright>
     <PackageProjectUrl>https://github.com/polterguy/magic.io</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/polterguy/magic.io/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://polterguy.github.io/favicon.ico</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -18,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\magic.io.contracts\magic.io.contracts.csproj" />
+    <ProjectReference Include="..\magic.io.services\magic.io.services.csproj" />
   </ItemGroup>
 
 </Project>

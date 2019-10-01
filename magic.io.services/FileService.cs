@@ -14,17 +14,33 @@ using magic.io.services.utilities;
 
 namespace magic.io.services
 {
+    /// <summary>
+    /// File service implementation, giving you access to download, delete, upload, copy and move files
+    /// on your server.
+    /// </summary>
     public class FileService : IFileService
     {
         readonly Utilities _utilities;
 
-        public FileService(IConfiguration configuration, IServiceProvider kernel)
+        /// <summary>
+        /// Creates a new instance of your service implementation class.
+        /// </summary>
+        /// <param name="configuration">Configuration object for your server.</param>
+        /// <param name="services">Service provider to retrieve services.</param>
+        public FileService(IConfiguration configuration, IServiceProvider services)
         {
-            _utilities = new Utilities(configuration, kernel);
+            _utilities = new Utilities(configuration, services);
         }
 
         #region [ -- Interface implementations -- ]
 
+        /// <summary>
+        /// Downloads a file to the client.
+        /// </summary>
+        /// <param name="path">Path to file.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
+        /// <returns>A file result.</returns>
         public FileResult Download(
             string path,
             string username,
@@ -49,6 +65,12 @@ namespace magic.io.services
             };
         }
 
+        /// <summary>
+        /// Deletes a file on your server.
+        /// </summary>
+        /// <param name="path">Path to file.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
         public void Delete(string path, string username, string[] roles)
         {
             path = _utilities.GetFullPath(path);
@@ -65,6 +87,13 @@ namespace magic.io.services
             File.Delete(path);
         }
 
+        /// <summary>
+        /// Uploads a file to the server.
+        /// </summary>
+        /// <param name="file">File that is attempted to be uploaded.</param>
+        /// <param name="folder">Folder of where to save file.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
         public void Upload(IFormFile file, string folder, string username, string[] roles)
         {
             if (file.Length <= 0)
@@ -96,6 +125,13 @@ namespace magic.io.services
             }
         }
 
+        /// <summary>
+        /// Copies a file from one location to another on your server.
+        /// </summary>
+        /// <param name="source">Path to file you want to copy.</param>
+        /// <param name="destination">Path to its new destination.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
         public void Copy(string source, string destination, string username, string[] roles)
         {
             if (string.IsNullOrEmpty(source))
@@ -138,6 +174,13 @@ namespace magic.io.services
             File.Copy(source, destination);
         }
 
+        /// <summary>
+        /// Moves a file from one location to another on your server.
+        /// </summary>
+        /// <param name="source">Path to file you want to move.</param>
+        /// <param name="destination">Path to its new destination.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
         public void Move(string source, string destination, string username, string[] roles)
         {
             if (string.IsNullOrEmpty(source))

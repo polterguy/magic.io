@@ -14,10 +14,18 @@ using magic.io.services.utilities;
 
 namespace magic.io.services
 {
+    /// <summary>
+    /// Folder service implementation for listing folder's content, deleting folders, moving folders, etc.
+    /// </summary>
     public class FolderService : IFolderService
     {
         readonly Utilities _utilities;
 
+        /// <summary>
+        /// Creates a new instance of your service implementation class.
+        /// </summary>
+        /// <param name="configuration">Configuration object for your server.</param>
+        /// <param name="services">Service provider to retrieve services.</param>
         public FolderService(IConfiguration configuration, IServiceProvider kernel)
         {
             _utilities = new Utilities(configuration, kernel);
@@ -25,6 +33,13 @@ namespace magic.io.services
 
         #region [ -- Interface implementations -- ]
 
+        /// <summary>
+        /// List folders inside of specified folder.
+        /// </summary>
+        /// <param name="path">Path to folder to list folders within.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
+        /// <returns>List of folders within your folder.</returns>
         public IEnumerable<string> ListFolders(
             string path,
             string username,
@@ -42,6 +57,13 @@ namespace magic.io.services
                 .Select(x => _utilities.GetRelativePath(x) + "/");
         }
 
+        /// <summary>
+        /// List files inside of specified folder.
+        /// </summary>
+        /// <param name="path">Path to folder to list files within.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
+        /// <returns>List of files within your folder.</returns>
         public IEnumerable<string> ListFiles(
             string path,
             string username,
@@ -60,6 +82,12 @@ namespace magic.io.services
                 .Select(_utilities.GetRelativePath);
         }
 
+        /// <summary>
+        /// Deletes some specified folder on your server.
+        /// </summary>
+        /// <param name="path">Path to folder to delete.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
         public void Delete(string path, string username, string[] roles)
         {
             path = _utilities.GetFullPath(path, true);
@@ -73,6 +101,12 @@ namespace magic.io.services
             Directory.Delete(path, true);
         }
 
+        /// <summary>
+        /// Create some specified folder on your server.
+        /// </summary>
+        /// <param name="path">Path to folder to create.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
         public void Create(string path, string username, string[] roles)
         {
             path = _utilities.GetFullPath(path, true);
@@ -89,6 +123,13 @@ namespace magic.io.services
             Directory.CreateDirectory(path);
         }
 
+        /// <summary>
+        /// Moves some folder on your server to a new location.
+        /// </summary>
+        /// <param name="source">Your folder's current path.</param>
+        /// <param name="destination">Destination for your folder.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
         public void Move(string source, string destination, string username, string[] roles)
         {
             if (string.IsNullOrEmpty(source))
@@ -127,6 +168,13 @@ namespace magic.io.services
             Directory.Move(source, destination);
         }
 
+        /// <summary>
+        /// Checks if some folder exists on your server.
+        /// </summary>
+        /// <param name="path">Path to folder.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
+        /// <returns>True if folder exists.</returns>
         public bool FolderExists(string path, string username, string[] roles)
         {
             if (string.IsNullOrEmpty(path))
@@ -144,6 +192,13 @@ namespace magic.io.services
             return Directory.Exists(path);
         }
 
+        /// <summary>
+        /// Checks if some file exists on your server.
+        /// </summary>
+        /// <param name="path">Path to file.</param>
+        /// <param name="username">Username of user creating request.</param>
+        /// <param name="roles">Roles user belongs to that is creating the request.</param>
+        /// <returns>True if file exists.</returns>
         public bool FileExists(string path, string username, string[] roles)
         {
             if (string.IsNullOrEmpty(path))

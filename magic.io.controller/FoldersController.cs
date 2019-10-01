@@ -15,7 +15,7 @@ using magic.io.contracts;
 namespace magic.io.controller
 {
     /// <summary>
-    /// IO controller for manipulating files and folders on your server
+    /// IO controller for manipulating folders on your server.
     /// </summary>
     [Route("api/folders")]
     [Consumes("application/json")]
@@ -25,19 +25,19 @@ namespace magic.io.controller
         readonly IFolderService _service;
 
         /// <summary>
-        /// Creates a new instance of your folders controller
+        /// Creates a new instance of your folders controller.
         /// </summary>
-        /// <param name="service">Service containing business logic</param>
+        /// <param name="service">Service containing your implementation.</param>
         public FoldersController(IFolderService service)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         /// <summary>
-        /// Returns all folders inside of the specified folder
+        /// Returns all folders inside of the specified folder.
         /// </summary>
-        /// <param name="folder">Folder to return folders from within</param>
-        /// <returns>List all folders inside of the specified folder</returns>
+        /// <param name="folder">Folder to return folders from within.</param>
+        /// <returns>All folders inside of the specified folder.</returns>
         [HttpGet]
         [Route("list-folders")]
         public IEnumerable<string> ListFolders(string folder)
@@ -49,10 +49,10 @@ namespace magic.io.controller
         }
 
         /// <summary>
-        /// Returns all files inside of the specified folder
+        /// Returns all files inside of the specified folder.
         /// </summary>
-        /// <param name="folder">Folder to return files from within</param>
-        /// <returns>List all files inside of the specified folder</returns>
+        /// <param name="folder">Folder to return files from within.</param>
+        /// <returns>All files inside of the specified folder.</returns>
         [HttpGet]
         [Route("list-files")]
         public IEnumerable<string> ListFiles(string folder)
@@ -64,9 +64,9 @@ namespace magic.io.controller
         }
 
         /// <summary>
-        /// Deletes the specified folder
+        /// Deletes the specified folder.
         /// </summary>
-        /// <param name="folder">Folder to delete</param>
+        /// <param name="folder">Folder to delete.</param>
         [HttpDelete]
         public void Delete([Required] string folder)
         {
@@ -77,22 +77,22 @@ namespace magic.io.controller
         }
 
         /// <summary>
-        /// Creates the specified folder
+        /// Creates the specified folder.
         /// </summary>
-        /// <param name="payload">Payload to create, should contain at least 'folder' property</param>
+        /// <param name="input">Information about folder you want to create.</param>
         [HttpPut]
-        public void Create([Required] [FromBody] JObject payload)
+        public void Create([Required] CreateModel input)
         {
             _service.Create(
-                payload["folder"].Value<string>(),
+                input.Path,
                 User?.Identity.Name,
                 User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
         }
 
         /// <summary>
-        /// Moves the specified source folder to its given destination
+        /// Moves the specified source folder to its given destination.
         /// </summary>
-        /// <param name="input">Source and destination folder</param>
+        /// <param name="input">Source and destination folder.</param>
         [HttpPost]
         [Route("move")]
         public void Move([Required] CopyMoveModel input)
@@ -107,7 +107,7 @@ namespace magic.io.controller
         /// <summary>
         /// Returns true if the specified folder exists.
         /// </summary>
-        /// <param name="path">Folder to check for</param>
+        /// <param name="path">Folder to check if exists.</param>
         [HttpGet]
         [Route("exists")]
         public bool Exists([Required] string path)
@@ -121,7 +121,7 @@ namespace magic.io.controller
         /// <summary>
         /// Returns true if the specified file exists.
         /// </summary>
-        /// <param name="path">File to check for</param>
+        /// <param name="path">File to check if exists.</param>
         [HttpGet]
         [Route("file-exists")]
         public bool FileExists([Required] string path)

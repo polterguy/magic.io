@@ -10,7 +10,10 @@ using magic.io.contracts;
 
 namespace magic.io.services.utilities
 {
-    public class Utilities
+    /*
+     * Utility helper class for services.
+     */
+    internal class Utilities
     {
         readonly IServiceProvider _kernel;
 
@@ -56,8 +59,7 @@ namespace magic.io.services.utilities
             string[] roles,
             AccessType type)
         {
-            var authorize = _kernel.GetService(typeof(IAuthorize)) as IAuthorize;
-            if (authorize == null)
+            if (!(_kernel.GetService(typeof(IAuthorize)) is IAuthorize authorize))
                 return true;
             return authorize.Authorize(path, username, roles, type);
         }
