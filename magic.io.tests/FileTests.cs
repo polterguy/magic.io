@@ -3,8 +3,11 @@
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
+using System;
 using System.IO;
+using System.Linq;
 using System.Security;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +17,8 @@ using Xunit;
 using magic.io.services;
 using magic.io.contracts;
 using magic.io.controller;
+using magic.signals.contracts;
+using magic.signals.services;
 
 namespace magic.io.tests
 {
@@ -36,6 +41,22 @@ namespace magic.io.tests
                 var reader = new StreamReader(fileStreamResult.FileStream);
                 Assert.Equal("File content", reader.ReadToEnd());
             }
+        }
+
+        [Fact]
+        public void UploadCustomAuthorizeSlot()
+        {
+            var controller = CreateController(typeof(AuthorizeSlot));
+            var fileMock = CreateMoqFile("File content", "foo.txt");
+            controller.Upload(fileMock.Object, "/");
+        }
+
+        [Fact]
+        public void UploadCustomAuthorizeSlot_THROWS()
+        {
+            var controller = CreateController(typeof(AuthorizeSlot));
+            var fileMock = CreateMoqFile("File content", "bar.txt");
+            Assert.Throws<SecurityException>(() => controller.Upload(fileMock.Object, "/"));
         }
 
         [Fact]
@@ -138,7 +159,7 @@ namespace magic.io.tests
         [Fact]
         public void Authorized_Fail_01()
         {
-            var controller = CreateController(true);
+            var controller = CreateController(typeof(Authorize));
             var fileMock = CreateMoqFile("File content", "test.txt");
             Assert.Throws<SecurityException>(() => controller.Upload(fileMock.Object, "/"));
         }
@@ -150,7 +171,7 @@ namespace magic.io.tests
             var fileMock = CreateMoqFile("File content", "test.txt");
             controller.Upload(fileMock.Object, "/");
 
-            controller = CreateController(true);
+            controller = CreateController(typeof(Authorize));
             Assert.Throws<SecurityException>(() => controller.Download("/test.txt"));
         }
 
@@ -161,7 +182,7 @@ namespace magic.io.tests
             var fileMock = CreateMoqFile("File content", "test.txt");
             controller.Upload(fileMock.Object, "/");
 
-            controller = CreateController(true);
+            controller = CreateController(typeof(Authorize));
             Assert.Throws<SecurityException>(() => controller.Move(new CopyMoveModel
             {
                 Source = "/test.txt",
@@ -176,7 +197,7 @@ namespace magic.io.tests
             var fileMock = CreateMoqFile("File content", "test.txt");
             controller.Upload(fileMock.Object, "/");
 
-            controller = CreateController(true);
+            controller = CreateController(typeof(Authorize));
             Assert.Throws<SecurityException>(() => controller.Copy(new CopyMoveModel
             {
                 Source = "/test.txt",
@@ -191,7 +212,7 @@ namespace magic.io.tests
             var fileMock = CreateMoqFile("File content", "test.txt");
             controller.Upload(fileMock.Object, "/");
 
-            controller = CreateController(true);
+            controller = CreateController(typeof(Authorize));
             Assert.Throws<SecurityException>(() => controller.Delete("/test.txt"));
         }
 
@@ -223,7 +244,7 @@ namespace magic.io.tests
             }
         }
 
-        FilesController CreateController(bool authorize = false)
+        FilesController CreateController(Type authType = null)
         {
             var kernel = new ServiceCollection();
             kernel.AddTransient<IFileService, FileService>();
@@ -231,14 +252,31 @@ namespace magic.io.tests
 
             var mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("~/");
-            kernel.AddTransient<IConfiguration>((svc) => mockConfiguration.Object);
+            kernel.AddTransient((svc) => mockConfiguration.Object);
+            kernel.AddTransient<ISignaler, Signaler>();
+            var types = new SignalsProvider(InstantiateAllTypes<ISlot>(kernel));
+            kernel.AddTransient<ISignalsProvider>((svc) => types);
 
-            if (authorize)
+            if (authType != null)
             {
-                kernel.AddTransient<IAuthorize, Authorize>();
+                kernel.AddTransient(typeof(IAuthorize), authType);
             }
             var provider = kernel.BuildServiceProvider();
             return provider.GetService(typeof(FilesController)) as FilesController;
+        }
+
+        static IEnumerable<Type> InstantiateAllTypes<T>(ServiceCollection services) where T : class
+        {
+            var type = typeof(T);
+            var result = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
+
+            foreach (var idx in result)
+            {
+                services.AddTransient(idx);
+            }
+            return result;
         }
 
         #endregion

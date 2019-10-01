@@ -26,9 +26,9 @@ namespace magic.io.services
         /// </summary>
         /// <param name="configuration">Configuration object for your server.</param>
         /// <param name="services">Service provider to retrieve services.</param>
-        public FolderService(IConfiguration configuration, IServiceProvider kernel)
+        public FolderService(IConfiguration configuration, IServiceProvider services)
         {
-            _utilities = new Utilities(configuration, kernel);
+            _utilities = new Utilities(configuration, services);
         }
 
         #region [ -- Interface implementations -- ]

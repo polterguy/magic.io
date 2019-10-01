@@ -11,9 +11,23 @@ namespace magic.io.services
     /// <summary>
     /// Authorization service consumed when some file/folder resource is being accessed.
     /// Will be invoked to determine if the user has access to the resource or not.
+    /// 
+    /// This service implementation requires a static list of roles, and will only allow
+    /// any file/folder operation for a user explicitly belonging to one of these roles
+    /// declared during construction of the service.
     /// </summary>
-    public class AuthorizeService : IAuthorize
+    public class AuthorizeOnlyRoles : IAuthorize
     {
+        readonly string[] _roles;
+
+        /// <summary>
+        /// Create a new instance of your authorization service.
+        /// </summary>
+        public AuthorizeOnlyRoles(params string[] roles)
+        {
+            _roles = roles;
+        }
+
         /// <summary>
         /// Returns true if the user has access to the resource for the specified type of access requested.
         /// </summary>
@@ -24,8 +38,7 @@ namespace magic.io.services
         /// <returns>True if user has access to perform action, otherwise false.</returns>
         public bool Authorize(string path, string username, string[] roles, AccessType type)
         {
-            // TODO: Implement Hyperlambda slot callback here, to allow for overriding authorization more dynamically
-            return roles.Any(x => x == "root");
+            return roles.Any(userRoles => _roles.Any(serviceRoles => serviceRoles == userRoles));
         }
     }
 }
