@@ -13,8 +13,8 @@ The project contains three different authorization services. The most basic one 
 construction, and could probably be consumed as a Singleton, and will only allow any type of file access to
 a user belonging to one of the specified roles.
 
-The slightly more advanced onle, allows you to create your own dynamic slot, named __[magic.io.authorize]__,
-that allows you to declare a dynamic slot in your C# code, using the syntax from magic.signals, which will
+The slightly more advanced onle, allows you to create your own C# slot, named __[magic.io.authorize]__,
+that allows you to declare a slot in your C# code, using the syntax from magic.signals, which will
 be given the path, username, and all other data necessary to determine whether or not you'd like to give
 access to some resource or not.
 
@@ -24,6 +24,8 @@ to return either true or false, declaring whether or not the user has access to 
 
 In addition you can of course create your own authorization class, entirely in C#, and plug it into your
 `ServiceProvider`, making sure the services will use your service when some resource is requested.
+If you do, your `IAuthorize` implementation will be invoked every time some file resource is somehow
+requested by the library for some reasons.
 
 By default no authorization is given, unless you explicitly wire up some authorization service, using
 for instance the ServiceProvider in your own wiring code.
