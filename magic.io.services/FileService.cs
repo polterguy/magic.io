@@ -23,13 +23,24 @@ namespace magic.io.services
         readonly Utilities _utilities;
 
         /// <summary>
-        /// Creates a new instance of your service implementation class.
+        /// Creates a new instance of your service implementation class without any
+        /// authorization service implementation.
         /// </summary>
         /// <param name="configuration">Configuration object for your server.</param>
-        /// <param name="services">Service provider to retrieve services.</param>
-        public FileService(IConfiguration configuration, IServiceProvider services)
+        public FileService(IConfiguration configuration)
         {
-            _utilities = new Utilities(configuration, services);
+            _utilities = new Utilities(configuration, null);
+        }
+
+        /// <summary>
+        /// Creates a new instance of your service implementation class with the specified
+        /// authorize service implementation.
+        /// </summary>
+        /// <param name="configuration">Configuration object for your server.</param>
+        /// <param name="authorize">Service provider to retrieve services.</param>
+        public FileService(IConfiguration configuration, IAuthorize authorize)
+        {
+            _utilities = new Utilities(configuration, authorize ?? throw new ArgumentNullException(nameof(authorize)));
         }
 
         #region [ -- Interface implementations -- ]

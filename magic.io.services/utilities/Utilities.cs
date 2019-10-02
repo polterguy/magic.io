@@ -15,11 +15,11 @@ namespace magic.io.services.utilities
      */
     internal class Utilities
     {
-        readonly IServiceProvider _kernel;
+        readonly IAuthorize _authorize;
 
-        public Utilities(IConfiguration configuration, IServiceProvider kernel)
+        public Utilities(IConfiguration configuration, IAuthorize authorize)
         {
-            _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
+            _authorize = authorize;
 
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -59,9 +59,7 @@ namespace magic.io.services.utilities
             string[] roles,
             AccessType type)
         {
-            if (!(_kernel.GetService(typeof(IAuthorize)) is IAuthorize authorize))
-                return true;
-            return authorize.Authorize(path, username, roles, type);
+            return _authorize?.Authorize(path, username, roles, type) ?? true;
         }
     }
 }
