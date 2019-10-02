@@ -37,7 +37,7 @@ namespace magic.io.controller
         /// </summary>
         /// <param name="file">The actual file.</param>
         /// <param name="folder">The folder on your server where you want to store your file.</param>
-        [HttpPost]
+        [HttpPut]
         [DisableRequestSizeLimit]
         [Consumes("multipart/form-data")]
         public void Upload([Required] [FromForm] IFormFile file, string folder)

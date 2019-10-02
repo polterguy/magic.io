@@ -5,12 +5,44 @@
 
 A generic file controller for .Net allowing you to upload and download files to and from your server.
 
+## Usage
+
+The project is intended to be dynamically added to your Web API as a controller, making sure you create
+an association between the `IFileService` and its `FileService` by mapping it up as a transient service
+using something such as follows for instance.
+
+```csharp
+/*
+ * Somewhere were you initialize your ServiceProvider.
+ */
+service.AddTransient<IFileService, FileService>();
+```
+
+Then assuming you're able to dynamically add the _"magic.io.controller"_ as a controller endpoint plugin, you'll
+end up with two endpoints as follows.
+
+* `GET` - `api/files` - Downloads the _"file"_ QUERY parameter file. Remember to URL encode your QUERY parameters.
+* `PUT` - `api/files` - Uploads the _"file_" file. Use _"multipart/form-data"_ as `Content-Type` for your request.
+
+If you PUT a file that already exists, the existing file will be overwritten. However, you'll also need to think
+about authorization before you actually start using the library.
+
 ## Authorization
 
 Before you can start consumption of the project, you'll need to think about what type of authorization process
 you intend to use. The project contains three different authorization services. The most basic one accepts a
 list of roles during construction, and could probably be consumed as a Singleton, and will only allow any type
-of file access to a user belonging to one of the specified roles.
+of file access to a user belonging to one of the specified roles. To use this most simplest authorization
+implementation, you could provide something like the following.
+
+```csharp
+/*
+ * Somewhere were you initialize your ServiceProvider.
+ *
+ * This will only allow "admin" and "root" users to upload files to your server.
+ */
+service.AddTransient<IAuthorize>((svc) => new AuthorizeOnlyRoles("root", "admin"));
+```
 
 The slightly more advanced only, allows you to create your own C# slot, named __[magic.io.authorize]__,
 that allows you to declare a slot in your C# code, using the syntax from magic.signals, which will
