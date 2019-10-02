@@ -3,20 +3,20 @@
 
 [![Build status](https://travis-ci.org/polterguy/magic.io.svg?master)](https://travis-ci.org/polterguy/magic.io)
 
-A generic file/folder controller for .Net giving you access to the most important parts from `System.IO` through
-an ASP.NET Web API. This controller allows you to download files, move files (on your server), upload files, and
-save and delete files on your server, through a JSON based Web API.
+A generic file controller for .Net allowing you to upload and download files to and from your server.
 
 ## Authorization
 
-The project contains three different authorization services. The most basic one accepts a list of roles during
-construction, and could probably be consumed as a Singleton, and will only allow any type of file access to
-a user belonging to one of the specified roles.
+Before you can start consumption of the project, you'll need to think about what type of authorization process
+you intend to use. The project contains three different authorization services. The most basic one accepts a
+list of roles during construction, and could probably be consumed as a Singleton, and will only allow any type
+of file access to a user belonging to one of the specified roles.
 
-The slightly more advanced onle, allows you to create your own C# slot, named __[magic.io.authorize]__,
+The slightly more advanced only, allows you to create your own C# slot, named __[magic.io.authorize]__,
 that allows you to declare a slot in your C# code, using the syntax from magic.signals, which will
 be given the path, username, and all other data necessary to determine whether or not you'd like to give
-access to some resource or not.
+access to some resource or not. This allows you to control access to files according to the paths, file
+extensions, etc.
 
 The third one, allows you to declare your own dynamic __[magic.io.authorize]__ slot, as a __[slot]__ invocation
 in your own Hyperlambda code, which will be given the same set of arguments as the above one, and be expected

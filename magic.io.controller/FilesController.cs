@@ -62,48 +62,5 @@ namespace magic.io.controller
                 User?.Identity.Name,
                 User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
         }
-
-        /// <summary>
-        /// Deletes the specified file.
-        /// </summary>
-        /// <param name="file">File path to delete.</param>
-        [HttpDelete]
-        public void Delete([Required] string file)
-        {
-            _service.Delete(
-                file,
-                User?.Identity.Name,
-                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
-        }
-
-        /// <summary>
-        /// Copies the specified source file to its given destination.
-        /// </summary>
-        /// <param name="input">Source and destination file path.</param>
-        [HttpPost]
-        [Route("copy")]
-        public void Copy([Required] CopyMoveModel input)
-        {
-            _service.Copy(
-                input.Source,
-                input.Destination,
-                User?.Identity.Name,
-                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
-        }
-
-        /// <summary>
-        /// Moves the specified source file to its given destination.
-        /// </summary>
-        /// <param name="input">Source and destination file path.</param>
-        [HttpPost]
-        [Route("move")]
-        public void Move([Required] CopyMoveModel input)
-        {
-            _service.Move(
-                input.Source,
-                input.Destination,
-                User?.Identity.Name,
-                User?.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToArray());
-        }
     }
 }

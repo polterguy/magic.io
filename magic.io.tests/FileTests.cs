@@ -88,75 +88,6 @@ namespace magic.io.tests
         }
 
         [Fact]
-        public void UploadDeleteDownload_Fail()
-        {
-            var controller = CreateController();
-            var fileMock = CreateMoqFile("File content", "test.txt");
-            controller.Upload(fileMock.Object, "/");
-
-            controller.Delete("/test.txt");
-
-            Assert.Throws<FileNotFoundException>(() => controller.Download("/test.txt"));
-        }
-
-        [Fact]
-        public void UploadCopyDownload()
-        {
-            var controller = CreateController();
-            var fileMock = CreateMoqFile("File content", "test.txt");
-            controller.Upload(fileMock.Object, "/");
-
-            controller.Copy(new CopyMoveModel
-            {
-                Source = "/test.txt",
-                Destination = "/test2.txt",
-            });
-
-            var result = controller.Download("/test2.txt");
-            Assert.Equal("test2.txt", result.FileDownloadName);
-            var fileStreamResult = result as FileStreamResult;
-            using (fileStreamResult.FileStream)
-            {
-                var reader = new StreamReader(fileStreamResult.FileStream);
-                Assert.Equal("File content", reader.ReadToEnd());
-            }
-
-            result = controller.Download("/test.txt");
-            Assert.Equal("test.txt", result.FileDownloadName);
-            fileStreamResult = result as FileStreamResult;
-            using (fileStreamResult.FileStream)
-            {
-                var reader = new StreamReader(fileStreamResult.FileStream);
-                Assert.Equal("File content", reader.ReadToEnd());
-            }
-        }
-
-        [Fact]
-        public void UploadMoveDownload()
-        {
-            var controller = CreateController();
-            var fileMock = CreateMoqFile("File content", "test.txt");
-            controller.Upload(fileMock.Object, "/");
-
-            controller.Move(new CopyMoveModel
-            {
-                Source = "/test.txt",
-                Destination = "/test2.txt",
-            });
-
-            var result = controller.Download("/test2.txt");
-            Assert.Equal("test2.txt", result.FileDownloadName);
-            var fileStreamResult = result as FileStreamResult;
-            using (fileStreamResult.FileStream)
-            {
-                var reader = new StreamReader(fileStreamResult.FileStream);
-                Assert.Equal("File content", reader.ReadToEnd());
-            }
-
-            Assert.Throws<FileNotFoundException>(() => controller.Download("/test.txt"));
-        }
-
-        [Fact]
         public void Authorized_Fail_01()
         {
             var controller = CreateController(typeof(Authorize));
@@ -173,47 +104,6 @@ namespace magic.io.tests
 
             controller = CreateController(typeof(Authorize));
             Assert.Throws<SecurityException>(() => controller.Download("/test.txt"));
-        }
-
-        [Fact]
-        public void Authorized_Fail_03()
-        {
-            var controller = CreateController();
-            var fileMock = CreateMoqFile("File content", "test.txt");
-            controller.Upload(fileMock.Object, "/");
-
-            controller = CreateController(typeof(Authorize));
-            Assert.Throws<SecurityException>(() => controller.Move(new CopyMoveModel
-            {
-                Source = "/test.txt",
-                Destination = "/test2.txt",
-            }));
-        }
-
-        [Fact]
-        public void Authorized_Fail_04()
-        {
-            var controller = CreateController();
-            var fileMock = CreateMoqFile("File content", "test.txt");
-            controller.Upload(fileMock.Object, "/");
-
-            controller = CreateController(typeof(Authorize));
-            Assert.Throws<SecurityException>(() => controller.Copy(new CopyMoveModel
-            {
-                Source = "/test.txt",
-                Destination = "/test2.txt",
-            }));
-        }
-
-        [Fact]
-        public void Authorized_Fail_05()
-        {
-            var controller = CreateController();
-            var fileMock = CreateMoqFile("File content", "test.txt");
-            controller.Upload(fileMock.Object, "/");
-
-            controller = CreateController(typeof(Authorize));
-            Assert.Throws<SecurityException>(() => controller.Delete("/test.txt"));
         }
 
         #endregion
@@ -258,9 +148,8 @@ namespace magic.io.tests
             kernel.AddTransient<ISignalsProvider>((svc) => types);
 
             if (authType != null)
-            {
                 kernel.AddTransient(typeof(IAuthorize), authType);
-            }
+
             var provider = kernel.BuildServiceProvider();
             return provider.GetService(typeof(FilesController)) as FilesController;
         }

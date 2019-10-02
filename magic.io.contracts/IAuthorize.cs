@@ -3,9 +3,6 @@
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-
 namespace magic.io.contracts
 {
     /// <summary>

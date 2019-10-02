@@ -12,21 +12,6 @@ namespace magic.io.contracts
     public enum AccessType
     {
         /// <summary>
-        /// Reading of folder type of access required.
-        /// </summary>
-        ReadFolder,
-
-        /// <summary>
-        /// Writing of folder type of access required.
-        /// </summary>
-        WriteFolder,
-
-        /// <summary>
-        /// Deleting of folder type of access required.
-        /// </summary>
-        DeleteFolder,
-
-        /// <summary>
         /// Reading of file type of access required.
         /// </summary>
         ReadFile,
@@ -35,10 +20,5 @@ namespace magic.io.contracts
         /// Writing of file type of access required.
         /// </summary>
         WriteFile,
-
-        /// <summary>
-        /// Deleting of file type of access required.
-        /// </summary>
-        DeleteFile,
     }
 }
