@@ -3,7 +3,7 @@
 
 [![Build status](https://travis-ci.org/polterguy/magic.io.svg?master)](https://travis-ci.org/polterguy/magic.io)
 
-A generic file controller for .Net allowing you to upload and download files to and from your server.
+A generic file upload/download controller for .Net allowing you to upload and download files to and from your server.
 
 ## Usage
 
