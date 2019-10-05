@@ -2,6 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>magic.io.services</PackageId>
+    <Authors>Thomas Hansen</Authors>
+    <Company>Thomas Hansen</Company>
+    <Copyright>Thomas Hansen, thomas@gaiasoul.com</Copyright>
+    <Description>Service implementations for magic.io.</Description>
+    <PackageProjectUrl>https://github.com/polterguy/magic.io</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/polterguy/magic.io/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://polterguy.github.io/favicon.ico</PackageIconUrl>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageVersion>1.1.2</PackageVersion>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/polterguy/magic.io.git</RepositoryUrl>
+    <PackageTags>http, rest, upload, download, files</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -9,11 +24,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="magic.node.extensions" Version="1.0.0" />
-    <PackageReference Include="magic.signals.services" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0" />
     <PackageReference Include="MimeTypes" Version="1.1.0" />
+    <PackageReference Include="magic.signals" Version="1.1.2" />
+    <PackageReference Include="magic.node.extensions" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

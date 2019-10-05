@@ -3,11 +3,11 @@
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
+using System.Linq;
 using magic.node;
 using magic.io.contracts;
 using magic.node.extensions;
 using magic.signals.contracts;
-using System.Linq;
 
 namespace magic.io.services
 {

@@ -4,7 +4,6 @@
  */
 
 using System;
-using System.Linq;
 using magic.io.contracts;
 
 namespace magic.io.services
