@@ -12,7 +12,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/polterguy/magic.io/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>https://polterguy.github.io/favicon.ico</PackageIconUrl>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>1.1.5</PackageVersion>
+    <PackageVersion>1.1.6</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/polterguy/magic.io.git</RepositoryUrl>
@@ -28,7 +28,7 @@
     <PackageReference Include="MimeTypes" Version="1.1.0" />
     <PackageReference Include="magic.node.extensions" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
-    <PackageReference Include="magic.signals" Version="1.1.5" />
+    <PackageReference Include="magic.signals" Version="1.1.7" />
   </ItemGroup>
 
   <ItemGroup>
