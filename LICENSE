@@ -1,22 +1,27 @@
 
-           Magic is Dual Licensed
 
-You can use Magic either under the terms the Affero GPL license version 3.0
-as published by the Free Software Foundation, with the Hippocratic addendum.
-Or you can purchase a proprietary license allowing you to create closed
-software. The Hippocratic addendum can be found below.
+Copyright 2019 Thomas Hansen, thomas@gaiasoul.com, all rights reserved
 
-* The Software may not be used by individuals, corporations, governments, or
-  other groups for systems or activities that actively and knowingly endanger,
-  harm, or otherwise threaten the physical, mental, economic, or general
-  well-being of individuals or groups in violation of the United Nations
-  Universal Declaration of Human Rights.
-  Read more here - https://www.un.org/en/universal-declaration-human-rights/
+Magic is not Open Source or Free Software, even though most of its code is
+publicly available - And you will need one license key for each production
+machine you intend to install it on. During development and testing however,
+you can use it for free, as you evaluate Magic. But once you decide to put
+Magic into production, you will need one license key for each hostname you
+intend to run Magic on.
 
-* A proprietary license allowing you to create closed source software can be
-  obtained below.
+If you create Free and Open Source Software however, and you publicly make
+your source code available for everybody to download - I might give you a
+free license key, to run it free of charge, on one production server,
+associated with one hostname.
 
-* You can find a version of the Affero GPL license on disc, distributed with
-  the software.
+Read more here - https://gaiasoul.com/license-magic/
 
-Read more here https://gaiasoul.com/license-magic
+Disclaimer!
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
