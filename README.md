@@ -68,10 +68,10 @@ for instance the ServiceProvider in your own wiring code.
 
 ## License
 
-Magic is licensed as Affero GPL. This means that you can only use it to create Open Source solutions.
-If this is a problem, you can contact at thomas@gaiasoul.com me to negotiate a proprietary license if
-you want to use the framework to build closed source code. This will allow you to use Magic in closed
-source projects, in addition to giving you access to Microsoft SQL Server adapters, to _"crudify"_
-database tables in MS SQL Server. I also provide professional support for clients that buys a
-proprietary enabling license.
+Although most of Magic's source code is publicly available, Magic is _not_ Open Source or Free Software.
+You have to obtain a valid license key to install it in production, and I normally charge a fee for such a
+key. You can [obtain a license key here](https://gaiasoul.com/license-magic/).
+Notice, 5 hours after you put Magic into production, it will stop functioning, unless you have a valid
+license for it.
 
+* [Get licensed](https://gaiasoul.com/license-magic/)
