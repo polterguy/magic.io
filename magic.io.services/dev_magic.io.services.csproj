@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>magic.io.services</RootNamespace>
+    <AssemblyName>magic.io.services</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
