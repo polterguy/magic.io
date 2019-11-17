@@ -158,7 +158,7 @@ namespace magic.io.tests
         {
             var type = typeof(T);
             var result = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => !x.IsDynamic && !x.FullName.StartsWith("Microsoft"))
+                .Where(x => !x.IsDynamic && !x.FullName.StartsWith("Microsoft", StringComparison.InvariantCulture))
                 .SelectMany(s => s.GetTypes())
                 .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
 
