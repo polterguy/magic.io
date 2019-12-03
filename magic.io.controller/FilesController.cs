@@ -57,6 +57,7 @@ namespace magic.io.controller
         [HttpGet]
         public FileResult Download([Required] string file)
         {
+            Response.Headers["Access-Control-Expose-Headers"] = "Content-Disposition";
             return _service.Download(
                 file,
                 User?.Identity.Name,
