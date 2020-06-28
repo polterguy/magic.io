@@ -12,12 +12,19 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/polterguy/magic.io/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>https://polterguy.github.io/favicon.ico</PackageIconUrl>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>5.0.0</PackageVersion>
+    <PackageVersion>7.0.0</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/polterguy/magic.io.git</RepositoryUrl>
     <PackageTags>http, rest, upload, download, files</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin/Release/netstandard2.0/magic.io.controller.xml</DocumentationFile>
