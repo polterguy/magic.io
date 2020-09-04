@@ -40,7 +40,7 @@ namespace magic.io.services
         /// <param name="authorize">Service provider to retrieve services.</param>
         public FileService(IConfiguration configuration, IAuthorize authorize)
         {
-            _utilities = new Utilities(configuration, authorize ?? throw new ArgumentNullException(nameof(authorize)));
+            _utilities = new Utilities(configuration, authorize);
         }
 
         #region [ -- Interface implementations -- ]

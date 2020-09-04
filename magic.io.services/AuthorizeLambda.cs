@@ -24,7 +24,7 @@ namespace magic.io.services
         /// </summary>
         public AuthorizeLambda(Func<string, string, string[], AccessType, bool> functor)
         {
-            _functor = functor ?? throw new ArgumentNullException(nameof(functor));
+            _functor = functor;
         }
 
         /// <summary>

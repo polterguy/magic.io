@@ -21,9 +21,6 @@ namespace magic.io.services.utilities
         {
             _authorize = authorize;
 
-            if (configuration == null)
-                throw new ArgumentNullException(nameof(configuration));
-
             Root = (configuration["magic:io:root-folder"] ?? "~/files/")
                 .Replace("~", Directory.GetCurrentDirectory())
                 .TrimEnd('/') + "/";

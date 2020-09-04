@@ -27,7 +27,7 @@ namespace magic.io.controller
         /// <param name="service">Service containing implementation.</param>
         public FilesController(IFileService service)
         {
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _service = service;
         }
 
         /// <summary>
