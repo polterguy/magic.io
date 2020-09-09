@@ -74,10 +74,6 @@ In addition you can of course create your own `IAuthorize` implementation, entir
 If you do, your `IAuthorize` implementation will be invoked every time some file resource is somehow
 requested by the library for some reasons.
 
-There is also a convenience authorization implementation, allowing you to simply provide a lambda
-`Func` callback, that will be invoked whenever some resource is being accessed, or some file is uploaded.
-This authorize service implementation class is called `AuthorizeLambda`.
-
 By default no authorization is given, unless you explicitly wire up some authorization service, using
 for instance the ServiceProvider in your own wiring code.
 
