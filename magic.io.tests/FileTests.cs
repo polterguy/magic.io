@@ -17,8 +17,9 @@ using Xunit;
 using magic.io.services;
 using magic.io.contracts;
 using magic.io.controller;
-using magic.signals.contracts;
 using magic.signals.services;
+using magic.signals.contracts;
+using magic.io.services.authorization;
 
 namespace magic.io.tests
 {
@@ -44,6 +45,52 @@ namespace magic.io.tests
         }
 
         [Fact]
+        public void UploadDownloadHyperlambda()
+        {
+            var controller = CreateController();
+            var fileMock = CreateMoqFile("foo", "test.hl");
+            controller.Upload(fileMock.Object, "/");
+
+            var result = controller.Download("/test.hl");
+            Assert.Equal("test.hl", result.FileDownloadName);
+            var fileStreamResult = result as FileStreamResult;
+            using (fileStreamResult.FileStream)
+            {
+                var reader = new StreamReader(fileStreamResult.FileStream);
+                Assert.Equal("foo", reader.ReadToEnd());
+            }
+        }
+
+        [Fact]
+        public void UploadThrows_01()
+        {
+            var controller = CreateController();
+
+            // Empty file, should throw
+            var fileMock = CreateMoqFile("", "test.txt");
+            Assert.Throws<ArgumentException>(() => controller.Upload(fileMock.Object, "/"));
+        }
+
+        [Fact]
+        public void UploadThrows_02()
+        {
+            var controller = CreateController();
+
+            // Empty file, should throw
+            Assert.Throws<NullReferenceException>(() => controller.Upload(null, "/"));
+        }
+
+        [Fact]
+        public void UploadDownloadThrows_01()
+        {
+            var controller = CreateController();
+            var fileMock = CreateMoqFile("File content", "test.txt");
+            controller.Upload(fileMock.Object, "/");
+
+            Assert.Throws<FileNotFoundException>(() => controller.Download("/test2.txt"));
+        }
+
+        [Fact]
         public void UploadCustomAuthorizeSlot()
         {
             var controller = CreateController(typeof(AuthorizeSlot));
@@ -52,9 +99,38 @@ namespace magic.io.tests
         }
 
         [Fact]
+        public void UploadAuthorizeOnlyRoles_Throws()
+        {
+            var controller = CreateController(typeof(AuthorizeOnlyRoles));
+            var fileMock = CreateMoqFile("File content", "foo.txt");
+            Assert.Throws<SecurityException>(() => controller.Upload(fileMock.Object, "/"));
+        }
+
+        [Fact]
+        public void UploadAuthorizeLambda()
+        {
+            var controller = CreateController(typeof(AuthorizeLambda));
+            var fileMock = CreateMoqFile("File content", "foo.txt");
+            controller.Upload(fileMock.Object, "/");
+        }
+
+        [Fact]
+        public void UploadAuthorizeLambda_Throws()
+        {
+            var controller = CreateController(typeof(AuthorizeLambda));
+            var fileMock = CreateMoqFile("File content", "error.txt");
+            Assert.Throws<SecurityException>(() => controller.Upload(fileMock.Object, "/"));
+        }
+
+        [Fact]
         public void UploadCustomAuthorizeSlot_THROWS()
         {
             var controller = CreateController(typeof(AuthorizeSlot));
+
+            /*
+             * Notice, the slot [magic.io.authorize] which is a mock slot in this project,
+             * throws if the filename doesn't end with 'foo.txt'.
+             */
             var fileMock = CreateMoqFile("File content", "bar.txt");
             Assert.Throws<SecurityException>(() => controller.Upload(fileMock.Object, "/"));
         }
@@ -90,7 +166,7 @@ namespace magic.io.tests
         [Fact]
         public void Authorized_Fail_01()
         {
-            var controller = CreateController(typeof(Authorize));
+            var controller = CreateController(typeof(TestAuthorizeInterface));
             var fileMock = CreateMoqFile("File content", "test.txt");
             Assert.Throws<SecurityException>(() => controller.Upload(fileMock.Object, "/"));
         }
@@ -102,7 +178,7 @@ namespace magic.io.tests
             var fileMock = CreateMoqFile("File content", "test.txt");
             controller.Upload(fileMock.Object, "/");
 
-            controller = CreateController(typeof(Authorize));
+            controller = CreateController(typeof(TestAuthorizeInterface));
             Assert.Throws<SecurityException>(() => controller.Download("/test.txt"));
         }
 
@@ -126,31 +202,32 @@ namespace magic.io.tests
             return fileMock;
         }
 
-        internal class Authorize : IAuthorize
-        {
-            bool IAuthorize.Authorize(string path, string username, string[] roles, AccessType type)
-            {
-                return false;
-            }
-        }
-
         FilesController CreateController(Type authType = null)
         {
-            var kernel = new ServiceCollection();
-            kernel.AddTransient<IFileService, FileService>();
-            kernel.AddTransient<FilesController>();
+            var services = new ServiceCollection();
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<FilesController>();
 
             var mockConfiguration = new Mock<IConfiguration>();
             mockConfiguration.SetupGet(x => x[It.IsAny<string>()]).Returns("~/");
-            kernel.AddTransient((svc) => mockConfiguration.Object);
-            kernel.AddTransient<ISignaler, Signaler>();
-            var types = new SignalsProvider(InstantiateAllTypes<ISlot>(kernel));
-            kernel.AddTransient<ISignalsProvider>((svc) => types);
+            services.AddTransient((svc) => mockConfiguration.Object);
+            services.AddTransient<ISignaler, Signaler>();
+            var types = new SignalsProvider(InstantiateAllTypes<ISlot>(services));
+            services.AddTransient<ISignalsProvider>((svc) => types);
 
-            if (authType != null)
-                kernel.AddTransient(typeof(IAuthorize), authType);
+            if (authType == typeof(AuthorizeOnlyRoles))
+                services.AddSingleton<IAuthorize>((svc) => new AuthorizeOnlyRoles("foo"));
+            else if (authType == typeof(AuthorizeLambda))
+                services.AddSingleton<IAuthorize>(new AuthorizeLambda((path, username, roles, accessType) => {
+                    if (path.EndsWith("error.txt"))
+                        return false;
+                    return true;
+                }));
+            else if (authType != null)
+                services.AddTransient(typeof(IAuthorize), authType);
 
-            var provider = kernel.BuildServiceProvider();
+
+            var provider = services.BuildServiceProvider();
             return provider.GetService(typeof(FilesController)) as FilesController;
         }
 

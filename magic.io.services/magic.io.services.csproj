@@ -23,11 +23,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="../LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+    <None Include="../LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../ico.png" Pack="true" PackagePath="$(PackageIcon)"/>
+    <None Include="../ico.png" Pack="true" PackagePath="$(PackageIcon)" />
   </ItemGroup>
 
   <ItemGroup>

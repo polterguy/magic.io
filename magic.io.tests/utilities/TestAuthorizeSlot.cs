@@ -11,7 +11,7 @@ using System.Linq;
 namespace magic.io.tests.utilities
 {
     [Slot(Name = "magic.io.authorize")]
-    class AuthoriseSlot : ISlot
+    class TestAuthorizeSlot : ISlot
     {
         public void Signal(ISignaler signaler, Node input)
         {

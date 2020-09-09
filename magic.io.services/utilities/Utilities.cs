@@ -28,14 +28,6 @@ namespace magic.io.services.utilities
 
         public string Root { get; private set; }
 
-        public string GetRelativePath(string absolute)
-        {
-            if (absolute.IndexOf(Root, StringComparison.InvariantCulture) != 0)
-                throw new ArgumentOutOfRangeException($"'{absolute}' is not an absolute path and hence cannot be relativized");
-
-            return "/" + absolute.Substring(Root.Length);
-        }
-
         public string GetFullPath(string path = null, bool isFolder = false)
         {
             if (isFolder)

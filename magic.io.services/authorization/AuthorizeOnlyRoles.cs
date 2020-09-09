@@ -4,31 +4,28 @@
  */
 
 using System.Linq;
-using magic.node;
 using magic.io.contracts;
-using magic.node.extensions;
-using magic.signals.contracts;
 
-namespace magic.io.services
+namespace magic.io.services.authorization
 {
     /// <summary>
-    /// Authorization service consumed when somee file/folder resource is being accessed.
+    /// Authorization service consumed when some file/folder resource is being accessed.
     /// Will be invoked to determine if the user has access to the resource or not.
     /// 
-    /// This service implementation will signal the dynamic slot called [magic.io.authorize] with its parameters,
-    /// and only allow access if that slot returns true. Notice, you'll have to actually declare this
-    /// slot somehow in your own C# code.
+    /// This service implementation requires a static list of roles, and will only allow
+    /// any file/folder operation for a user explicitly belonging to one of these roles
+    /// declared during construction of the service.
     /// </summary>
-    public class AuthorizeDynamicSlot : IAuthorize
+    public class AuthorizeOnlyRoles : IAuthorize
     {
-        readonly ISignaler _signaler;
+        readonly string[] _roles;
 
         /// <summary>
         /// Create a new instance of your authorization service.
         /// </summary>
-        public AuthorizeDynamicSlot(ISignaler signaler)
+        public AuthorizeOnlyRoles(params string[] roles)
         {
-            _signaler = signaler;
+            _roles = roles;
         }
 
         /// <summary>
@@ -41,13 +38,7 @@ namespace magic.io.services
         /// <returns>True if user has access to perform action, otherwise false.</returns>
         public bool Authorize(string path, string username, string[] roles, AccessType type)
         {
-            var pars = new Node("signal", "magic.io.authorize");
-            pars.Add(new Node("path", path));
-            pars.Add(new Node("username", username));
-            pars.Add(new Node("type", type.ToString()));
-            pars.Add(new Node("roles", null, roles.Select(x => new Node(null, x))));
-            _signaler.Signal("signal", pars);
-            return pars.Get<bool>();
+            return roles?.Any(userRoles => _roles.Any(serviceRoles => serviceRoles == userRoles)) ?? false;
         }
     }
 }

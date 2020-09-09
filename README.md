@@ -29,11 +29,12 @@ about authorization before you actually start using the library.
 
 ## Authorization
 
-Before you can start consumption of the project, you'll need to think about what type of authorization process
-you intend to use. The project contains three different authorization services. The most basic one accepts a
+Before you can start consuming the project, you'll need to think about what type of authorization process
+you intend to use. The project contains 4 different authorization services. The most basic one accepts a
 list of roles during construction, and could probably be consumed as a Singleton, and will only allow any type
-of file access to a user belonging to one of the specified roles. To use this most simplest authorization
-implementation, you could provide something like the following.
+of file access to a user belonging to one of the specified roles. To use the simplest authorization
+implementation, you could provide something like the following, that will _only_ allow users belonging to the
+_"admin"_ role, and the _"root"_ role to upload and download files.
 
 ```csharp
 /*
@@ -44,18 +45,32 @@ implementation, you could provide something like the following.
 service.AddTransient<IAuthorize>((svc) => new AuthorizeOnlyRoles("root", "admin"));
 ```
 
+The next step of authorization, is to use `AuthorizeLambda`, which allows you to supply a `Func`, that
+will be invoked with the path, username, roles and `AccessType` (read/write) requested. This allows you to
+create any amount of C# to verify the user is allowed to access the requested access type for the given
+file, and return true or false from your function, depending upon whether or not you want to grant the
+user access or not.
+
 The slightly more advanced only, allows you to create your own C# slot, named __[magic.io.authorize]__,
 that allows you to declare a slot in your C# code, using the syntax from magic.signals, which will
 be given the path, username, and all other data necessary to determine whether or not you'd like to give
 access to some resource or not. This allows you to control access to files according to the paths, file
 extensions, etc.
 
-The third one, allows you to declare your own dynamic __[magic.io.authorize]__ slot, as a __[slot]__ invocation
-in your own Hyperlambda code, which will be given the same set of arguments as the above one, and be expected
-to return either true or false, declaring whether or not the user has access to the requested resource or not.
+The fourth authorization scheme, allows you to declare your own dynamic __[magic.io.authorize]__ slot, as
+a __[slot]__ invocation in your own Hyperlambda code, which will be given the same set of arguments as
+the above **[magic.io.authorize]** static slot, and be expected to return either true or false,
+declaring whether or not the user has access to the requested resource or not.
 
-In addition you can of course create your own authorization class, entirely in C#, and plug it into your
-`ServiceProvider`, making sure the services will use your service when some resource is requested.
+Both of the latter methods will be given the following arguments.
+
+* __[path]__ - Path to file requested by caller
+* __[username]__ - Username of user trying to access file
+* __[type]__ - Type of access requested by user (can be _"ReadFile"_ or _"WriteFile"_)
+* __[roles]__ - Roles user belongs to
+
+In addition you can of course create your own `IAuthorize` implementation, entirely in C#, and plug it into your
+`ServiceProvider`, making sure the service will be resolved when some service within magic.io needs it.
 If you do, your `IAuthorize` implementation will be invoked every time some file resource is somehow
 requested by the library for some reasons.
 
