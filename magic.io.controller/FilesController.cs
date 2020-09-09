@@ -3,7 +3,6 @@
  * See the enclosed LICENSE file for details.
  */
 
-using System;
 using System.Linq;
 using System.Security.Claims;
 using System.ComponentModel.DataAnnotations;
@@ -55,7 +54,7 @@ namespace magic.io.controller
         [HttpGet]
         public FileResult Download([Required] string file)
         {
-            if (Response != null) // Allowing for testing
+            if (Response != null) // Allowing for testing endpoint.
                 Response.Headers["Access-Control-Expose-Headers"] = "Content-Disposition";
             return _service.Download(
                 file,
