@@ -76,12 +76,3 @@ requested by the library for some reasons.
 
 By default no authorization is given, unless you explicitly wire up some authorization service, using
 for instance the ServiceProvider in your own wiring code.
-
-## License
-
-Although most of Magic's source code is Open Source, you will need a license key to use it.
-[You can obtain a license key here](https://servergardens.com/buy/).
-Notice, 7 days after you put Magic into production, it will stop working, unless you have a valid
-license for it.
-
-* [Get licensed](https://servergardens.com/buy/)
