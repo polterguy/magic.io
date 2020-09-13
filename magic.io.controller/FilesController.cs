@@ -15,7 +15,7 @@ namespace magic.io.controller
     /// <summary>
     /// IO controller for manipulating files on your server.
     /// </summary>
-    [Route("api/files", Order = 1)]
+    [Route("api/files")]
     public class FilesController : ControllerBase
     {
         readonly IFileService _service;
