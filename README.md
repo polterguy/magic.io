@@ -76,3 +76,18 @@ requested by the library for some reasons.
 
 By default no authorization is given, unless you explicitly wire up some authorization service, using
 for instance the ServiceProvider in your own wiring code.
+
+## Quality gates
+
+- [![Build status](https://travis-ci.com/polterguy/magic.io.svg?master)](https://travis-ci.com/polterguy/magic.io)
+- [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=alert_status)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
+- [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=bugs)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
+- [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=code_smells)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
+- [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=coverage)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
+- [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
+- [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=ncloc)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
+- [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.lambda.io&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=polterguy_magic.lambda.io)
+- [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
+- [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=security_rating)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
+- [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=sqale_index)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
+- [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
