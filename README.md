@@ -1,5 +1,5 @@
 
-# Magic IO for .Net
+# Magic IO
 
 [![Build status](https://travis-ci.com/polterguy/magic.io.svg?master)](https://travis-ci.com/polterguy/magic.io)
 
