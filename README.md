@@ -1,8 +1,6 @@
 
 # Magic IO
 
-[![Build status](https://travis-ci.com/polterguy/magic.io.svg?master)](https://travis-ci.com/polterguy/magic.io)
-
 A generic file upload/download controller for .Net allowing you to upload and download files to and from your server.
 
 ## Usage
