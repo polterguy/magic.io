@@ -77,6 +77,8 @@ requested by the library for some reasons.
 By default no authorization is given, unless you explicitly wire up some authorization service, using
 for instance the ServiceProvider in your own wiring code.
 
+* [Main documentation](https://polterguy.github.io/)
+
 ## Quality gates
 
 - [![Build status](https://travis-ci.com/polterguy/magic.io.svg?master)](https://travis-ci.com/polterguy/magic.io)
