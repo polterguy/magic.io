@@ -10,7 +10,7 @@
     <Description>Contracts for magic.io, that gives you a generic file upload/download controller for ASP.NET Core.</Description>
     <PackageProjectUrl>https://github.com/polterguy/magic.io</PackageProjectUrl>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>8.2.2</PackageVersion>
+    <PackageVersion>8.3.0</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/polterguy/magic.io.git</RepositoryUrl>
