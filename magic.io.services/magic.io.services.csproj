@@ -10,7 +10,7 @@
     <Description>Service implementations for magic.io that allows you to upload and download files to your ASP.NET Core application. To use package go to https://polterguy.github.io</Description>
     <PackageProjectUrl>https://github.com/polterguy/magic.io</PackageProjectUrl>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>8.5.0</PackageVersion>
+    <PackageVersion>8.6.0</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/polterguy/magic.io.git</RepositoryUrl>
@@ -42,8 +42,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="MimeTypes" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.8" />
-    <PackageReference Include="magic.node.extensions" Version="8.5.*" />
-    <PackageReference Include="magic.signals.contracts" Version="8.5.*" />
+    <PackageReference Include="magic.node.extensions" Version="8.6.*" />
+    <PackageReference Include="magic.signals.contracts" Version="8.6.*" />
   </ItemGroup>
 
   <ItemGroup>
