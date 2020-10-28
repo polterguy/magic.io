@@ -41,7 +41,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="MimeTypes" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.8" />
     <PackageReference Include="magic.node.extensions" Version="8.5.*" />
     <PackageReference Include="magic.signals.contracts" Version="8.5.*" />
   </ItemGroup>
