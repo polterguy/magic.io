@@ -10,7 +10,7 @@
     <Description>A generic IO controller for ASP.NET Core, that allows you to upload and download files, with support for custom authorization. This project give you 2 HTTP endpoints, one for downloading and another for uploading files. The project is highly conserving of resources, due to directly serializing to/from the HTTP request/response stream, into the related file. The project provides multiple different ways of authorization, allowing you to easily extend it as you see fit. To use package go to https://polterguy.github.io</Description>
     <PackageProjectUrl>https://github.com/polterguy/magic.io</PackageProjectUrl>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>8.6.0</PackageVersion>
+    <PackageVersion>8.6.6</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/polterguy/magic.io.git</RepositoryUrl>
