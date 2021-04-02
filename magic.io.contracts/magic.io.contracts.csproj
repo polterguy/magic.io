@@ -6,7 +6,7 @@
     <PackageId>magic.io.contracts</PackageId>
     <Authors>Thomas Hansen</Authors>
     <Company>Thomas Hansen</Company>
-    <Copyright>Thomas Hansen, thomas@gaiasoul.com</Copyright>
+    <Copyright>Thomas Hansen, thomas@servergardens.com</Copyright>
     <Description>Contracts for magic.io, that gives you a generic file upload/download controller for ASP.NET Core. To use package go to https://polterguy.github.io</Description>
     <PackageProjectUrl>https://github.com/polterguy/magic.io</PackageProjectUrl>
     <PackOnBuild>true</PackOnBuild>

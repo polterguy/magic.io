@@ -6,7 +6,7 @@
     <PackageId>magic.io.services</PackageId>
     <Authors>Thomas Hansen</Authors>
     <Company>Thomas Hansen</Company>
-    <Copyright>Thomas Hansen, thomas@gaiasoul.com</Copyright>
+    <Copyright>Thomas Hansen, thomas@servergardens.com</Copyright>
     <Description>Service implementations for magic.io that allows you to upload and download files to your ASP.NET Core application. To use package go to https://polterguy.github.io</Description>
     <PackageProjectUrl>https://github.com/polterguy/magic.io</PackageProjectUrl>
     <PackOnBuild>true</PackOnBuild>
@@ -41,8 +41,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="MimeTypes" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-    <PackageReference Include="magic.node.extensions" Version="8.9.*" />
-    <PackageReference Include="magic.signals.contracts" Version="8.9.*" />
+    <PackageReference Include="magic.node.extensions" Version="8.9.9" />
+    <PackageReference Include="magic.signals.contracts" Version="8.9.9" />
   </ItemGroup>
 
   <ItemGroup>
