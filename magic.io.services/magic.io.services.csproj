@@ -19,12 +19,11 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageIcon>ico.png</PackageIcon>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="../LICENSE" Pack="true" PackagePath="$(PackageLicenseFile)" />
-  </ItemGroup>
+  <PropertyGroup>
+    <PackageLicenseExpression>LGPL-2.1-only</PackageLicenseExpression>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Include="../ico.png" Pack="true" PackagePath="$(PackageIcon)" />
