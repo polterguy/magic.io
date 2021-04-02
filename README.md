@@ -77,7 +77,6 @@ for instance the ServiceProvider in your own wiring code.
 
 ## Quality gates
 
-- [![Build status](https://travis-ci.com/polterguy/magic.io.svg?master)](https://travis-ci.com/polterguy/magic.io)
 - [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=alert_status)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
 - [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=bugs)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
 - [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=code_smells)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
