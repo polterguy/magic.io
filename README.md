@@ -88,3 +88,8 @@ for instance the ServiceProvider in your own wiring code.
 - [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=security_rating)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
 - [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=sqale_index)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
 - [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
+
+## License
+
+This project is the copyright(c) 2020-2021 of Thomas Hansen thomas@servergardens.com, and is licensed under the terms
+of the LGPL version 3, as published by the Free Software Foundation. See the enclosed LICENSE file for details.
