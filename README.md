@@ -75,6 +75,10 @@ requested by the library for some reasons.
 By default no authorization is given, unless you explicitly wire up some authorization service, using
 for instance the ServiceProvider in your own wiring code.
 
+## Project website
+
+The source code for this repository can be found at [github.com/polterguy/magic.io](https://github.com/polterguy/magic.io), and you can provide feedback, provide bug reports, etc at the same place.
+
 ## Quality gates
 
 - [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=polterguy_magic.io&metric=alert_status)](https://sonarcloud.io/dashboard?id=polterguy_magic.io)
