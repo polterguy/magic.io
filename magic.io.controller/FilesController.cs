@@ -35,8 +35,8 @@ namespace magic.io.controller
         /// <param name="file">The actual file.</param>
         /// <param name="folder">The folder on your server where you want to store your file.</param>
         [HttpPut]
-        [DisableRequestSizeLimit]
         [Consumes("multipart/form-data")]
+        [RequestSizeLimit(8000000)] // Maximum 8MB payloads are accepted
         public void Upload([Required] [FromForm] IFormFile file, string folder)
         {
             _service.Upload(
