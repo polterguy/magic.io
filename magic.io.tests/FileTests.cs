@@ -202,7 +202,7 @@ namespace magic.io.tests
             return fileMock;
         }
 
-        FilesController CreateController(Type authType = null)
+        static FilesController CreateController(Type authType = null)
         {
             var services = new ServiceCollection();
             services.AddTransient<IFileService, FileService>();
