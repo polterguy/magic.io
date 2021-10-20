@@ -18,7 +18,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="magic.signals" Version="9.7.5" />
+    <PackageReference Include="magic.signals.contracts" Version="9.7.9" />
   </ItemGroup>
 
   <ItemGroup>
